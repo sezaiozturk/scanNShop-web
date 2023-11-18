@@ -49,11 +49,15 @@ const useStyle = createUseStyles(
                 textDecoration: "none",
                 boxSizing: "border-box",
                 scrollBehavior: "smooth",
+                padding: 0,
                 margin: 0,
             },
             html: {
                 fontSize: "62.5%",
                 userSelect: "none",
+            },
+            button: {
+                all: "unset",
             },
         },
         container: {},
