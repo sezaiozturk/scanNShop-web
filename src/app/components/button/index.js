@@ -1,6 +1,5 @@
 import { useSelector } from "react-redux";
 import useStyle from "./stylesheet";
-import { clickEvent } from "../../themes/helpers";
 const Button = ({
     alignSelf = "baseline",
     iconColor = "#F5F5F5",

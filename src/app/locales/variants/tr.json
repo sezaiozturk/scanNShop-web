@@ -3,6 +3,11 @@
     "translations": {
         "message": "ScanNShop Web Uygulaması",
         "login": "Giriş Yap",
-        "signup": "Kayıt Ol"
+        "signup": "Kayıt Ol",
+        "copyright": "Telif Hakkı © 2023 ScanNShop® - Tüm hakları saklıdır.",
+        "slogan": "Fiyatları hızla karşılaştırın, en iyisini bulun!",
+        "advert": "Firma veya Şirket iş ortağımız olun.",
+        "start": "Hemen katılın, ScanNShop ile işlerinizi kolaylaştırmaya başlayın",
+        "startUs": "Başlayalım"
     }
 }

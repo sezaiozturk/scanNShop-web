@@ -3,6 +3,11 @@
     "translations": {
         "message": "ScanNShop Web App",
         "login": "Log in",
-        "signup": "Sign up"
+        "signup": "Sign up",
+        "copyright": "Copyright © 2023 ScanNShop® - All right reserved.",
+        "slogan": "Compare prices swiftly, find the best one!",
+        "advert": "Become our Company or Business partner.",
+        "start": "Join now and start making your work easier with ScanNShop",
+        "startUs": "Lets get started"
     }
 }
