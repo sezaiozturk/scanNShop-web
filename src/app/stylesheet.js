@@ -46,9 +46,10 @@ const useStyle = createUseStyles(
                 },
             ],
             "*": {
-                textDecoration: "none",
-                boxSizing: "border-box",
+                transition: "all 0.5s",
                 scrollBehavior: "smooth",
+                boxSizing: "border-box",
+                textDecoration: "none",
                 padding: 0,
                 margin: 0,
             },

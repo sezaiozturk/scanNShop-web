@@ -4,6 +4,7 @@ import locales from "../../locales";
 let currentLocale = "en";
 const initialState = {
     language: locales[1].translations,
+    activeLanguage: currentLocale,
 };
 
 export const localeSlice = createSlice({
@@ -16,6 +17,7 @@ export const localeSlice = createSlice({
                     ? locales[0].translations
                     : locales[1].translations;
             currentLocale = currentLocale === "en" ? "tr" : "en";
+            state.activeLanguage = currentLocale;
         },
         /*decrement: (state) => {
             state.value -= 1;

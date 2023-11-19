@@ -1,6 +1,8 @@
 {
     "code": "tr",
     "translations": {
-        "message": "ScanNShop Web Uygulaması"
+        "message": "ScanNShop Web Uygulaması",
+        "login": "Giriş Yap",
+        "signup": "Kayıt Ol"
     }
 }

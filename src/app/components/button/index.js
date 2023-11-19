@@ -18,7 +18,7 @@ const Button = ({
     const classes = useStyle({ colors });
     const opacity = disabled || loading ? 0.6 : null;
     const flexDirection = reverse ? "row-reverse" : null;
-    //loading and disable error
+    //loading, disable error
     const combinedStyle = {
         opacity,
         alignSelf,

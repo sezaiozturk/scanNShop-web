@@ -1,6 +1,8 @@
 {
     "code": "en",
     "translations": {
-        "message": "ScanNShop Web App"
+        "message": "ScanNShop Web App",
+        "login": "Log in",
+        "signup": "Sign up"
     }
 }
