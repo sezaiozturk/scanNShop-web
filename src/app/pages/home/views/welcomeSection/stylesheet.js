@@ -1,0 +1,26 @@
+import { createUseStyles } from "react-jss";
+
+const useStyle = createUseStyles({
+    welcomeContainer: {
+        backgroundColor: ({ colors }) => colors.secondary,
+        padding: "10rem 8rem 4rem 8rem",
+    },
+    welcomeContentContainer: {
+        justifyContent: "space-between",
+        alignItems: "center",
+        display: "flex",
+        gap: "20rem",
+    },
+    slogan: {
+        color: ({ colors }) => colors.text,
+        fontFamily: "Alegreya-Regular",
+        marginBottom: "10rem",
+        letterSpacing: 1,
+        fontSize: "4rem",
+    },
+    welcome: {
+        height: "50rem",
+        width: "50rem",
+    },
+});
+export default useStyle;
