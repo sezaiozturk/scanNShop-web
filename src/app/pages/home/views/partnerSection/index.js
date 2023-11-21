@@ -7,16 +7,16 @@ const PartnerSection = () => {
     const language = useSelector(({ locale }) => locale.language);
     const classes = useStyle({ colors });
     return (
-        <div className={classes.advertContainer}>
-            <span className={classes.advertTitle}>{language.advert}</span>
+        <div className={classes.container}>
+            <span className={classes.title}>{language.advert}</span>
             <img
                 src="./assets/images/advert.svg"
                 alt="advert"
-                className={classes.advertPhoto}
+                className={classes.photo}
             />
             <div className={classes.space} />
             <div className={classes.box}>
-                <span className={classes.title}>{language.start}</span>
+                <span className={classes.subTitle}>{language.start}</span>
                 <span className={classes.text}>
                     Lorem Ipsum is simply dummy text of the printing and
                     typesetting industry. Lorem Ipsum has been the industry's

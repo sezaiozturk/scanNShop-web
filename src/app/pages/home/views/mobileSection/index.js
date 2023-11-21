@@ -6,10 +6,10 @@ const MobileSection = () => {
     const language = useSelector(({ locale }) => locale.language);
     const classes = useStyle({ colors });
     return (
-        <div className={classes.mobileContainer}>
-            <span className={classes.cityTitle}>{language.downloadApp}</span>
-            <div className={classes.mobileContentContainer}>
-                <span className={classes.appTitle}>{language.appTitle}</span>
+        <div className={classes.container}>
+            <span className={classes.title}>{language.downloadApp}</span>
+            <div className={classes.contentContainer}>
+                <span className={classes.subTitle}>{language.appTitle}</span>
                 <div className={classes.qrContainer}>
                     <img
                         src="./assets/images/qr.png"

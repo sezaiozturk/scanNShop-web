@@ -1,20 +1,20 @@
 import { createUseStyles } from "react-jss";
 
 const useStyle = createUseStyles({
-    advertContainer: {
+    container: {
         backgroundColor: ({ colors }) => colors.background,
         flexDirection: "column",
         position: "relative",
         paddingTop: "6rem",
         display: "flex",
     },
-    advertTitle: {
+    title: {
         color: ({ colors }) => colors.text,
         fontFamily: "Alegreya-Regular",
         padding: "0 8rem",
         fontSize: "3rem",
     },
-    advertPhoto: {
+    photo: {
         backgroundRepeat: "no-repeat",
         backgroundPosition: "center",
         margin: "2.5rem 0 0 0",
@@ -39,7 +39,7 @@ const useStyle = createUseStyles({
         width: 500,
         top: "38%",
     },
-    title: {
+    subTitle: {
         color: ({ colors }) => colors.text,
         fontFamily: "Alegreya-Medium",
         fontSize: "2.2rem",

@@ -7,16 +7,13 @@ const WelcomeSection = () => {
     const classes = useStyle({ colors });
     return (
         <div className={classes.container}>
-            <div className={classes.welcomeContainer}>
-                <div className={classes.welcomeContentContainer}>
-                    <span className={classes.slogan}>{language.slogan}</span>
-                    <img
-                        src="./assets/images/welcome.svg"
-                        alt="welcome"
-                        className={classes.welcome}
-                    />
-                </div>
-                <div className={classes.offerContainer}></div>
+            <div className={classes.contentContainer}>
+                <span className={classes.slogan}>{language.slogan}</span>
+                <img
+                    src="./assets/images/welcome.svg"
+                    alt="welcome"
+                    className={classes.welcome}
+                />
             </div>
         </div>
     );

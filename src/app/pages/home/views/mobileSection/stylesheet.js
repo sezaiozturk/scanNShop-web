@@ -1,14 +1,14 @@
 import { createUseStyles } from "react-jss";
 
 const useStyle = createUseStyles({
-    mobileContainer: {
+    container: {
         backgroundColor: ({ colors }) => colors.secondary,
         flexDirection: "column",
         padding: "6rem 8rem",
         display: "flex",
         gap: "3rem",
     },
-    mobileContentContainer: {
+    contentContainer: {
         backgroundColor: ({ colors }) => colors.primary,
         flexDirection: "column",
         borderRadius: 20,
@@ -16,10 +16,10 @@ const useStyle = createUseStyles({
         padding: "4rem",
         gap: "3rem",
     },
-    appTitle: {
-        color: ({ colors }) => colors.white,
+    title: {
+        color: ({ colors }) => colors.text,
         fontFamily: "Alegreya-Regular",
-        fontSize: "2.2rem",
+        fontSize: "3rem",
     },
     qrContainer: {
         display: "flex",
@@ -37,10 +37,10 @@ const useStyle = createUseStyles({
         fontFamily: "Alegreya-Regular",
         fontSize: "1.8rem",
     },
-    cityTitle: {
-        color: ({ colors }) => colors.text,
+    subTitle: {
+        color: ({ colors }) => colors.white,
         fontFamily: "Alegreya-Regular",
-        fontSize: "3rem",
+        fontSize: "2.2rem",
     },
 });
 export default useStyle;

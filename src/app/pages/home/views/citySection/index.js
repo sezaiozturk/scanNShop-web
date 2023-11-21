@@ -5,74 +5,61 @@ const CitySection = () => {
     const colors = useSelector(({ theme }) => theme.colors);
     const language = useSelector(({ locale }) => locale.language);
     const classes = useStyle({ colors });
+    const cities = [
+        [
+            {
+                id: "istanbul",
+                name: "İstanbul",
+            },
+            {
+                id: "ankara",
+                name: "Ankara",
+            },
+            {
+                id: "bursa",
+                name: "Bursa",
+            },
+            {
+                id: "antalya",
+                name: "Antalya",
+            },
+        ],
+
+        [
+            {
+                id: "isparta",
+                name: "Isparta",
+            },
+            {
+                id: "ordu",
+                name: "Ordu",
+            },
+        ],
+    ];
     return (
         <div className={classes.cityContainer}>
             <span className={classes.cityTitle}>{language.city}</span>
             <div className={classes.cityContentContainer}>
-                <div className={classes.row}>
-                    <div className={classes.cityBox}>
-                        <img
-                            className={classes.cityPhoto}
-                            src="./assets/images/istanbul.jpeg"
-                            alt="istanbul"
-                        />
-                        <div className={classes.nameContainer}>
-                            <span>İstanbul</span>
+                {cities.map((row) => {
+                    return (
+                        <div className={classes.row}>
+                            {row.map((city) => {
+                                return (
+                                    <div className={classes.cityBox}>
+                                        <img
+                                            className={classes.cityPhoto}
+                                            src={`./assets/images/${city.id}.jpeg`}
+                                            alt={city.id}
+                                        />
+                                        <div className={classes.nameContainer}>
+                                            <span>{city.name}</span>
+                                        </div>
+                                    </div>
+                                );
+                            })}
                         </div>
-                    </div>
-                    <div className={classes.cityBox}>
-                        <img
-                            className={classes.cityPhoto}
-                            src="./assets/images/ankara.jpeg"
-                            alt="ankara"
-                        />
-                        <div className={classes.nameContainer}>
-                            <span>Ankara</span>
-                        </div>
-                    </div>
-                    <div className={classes.cityBox}>
-                        <img
-                            className={classes.cityPhoto}
-                            src="./assets/images/bursa.jpeg"
-                            alt="bursa"
-                        />
-                        <div className={classes.nameContainer}>
-                            <span>Bursa</span>
-                        </div>
-                    </div>
-                    <div className={classes.cityBox}>
-                        <img
-                            className={classes.cityPhoto}
-                            src="./assets/images/antalya.jpeg"
-                            alt="antalya"
-                        />
-                        <div className={classes.nameContainer}>
-                            <span>Antalya</span>
-                        </div>
-                    </div>
-                </div>
-                <div className={classes.row}>
-                    <div className={classes.cityBox}>
-                        <img
-                            className={classes.cityPhoto}
-                            src="./assets/images/isparta.jpeg"
-                            alt="isparta"
-                        />
-                        <div className={classes.nameContainer}>
-                            <span>Isparta</span>
-                        </div>
-                    </div>
-                    <div className={classes.cityBox}>
-                        <img
-                            className={classes.cityPhoto}
-                            src="./assets/images/ordu.jpeg"
-                            alt="ordu"
-                        />
-                        <div className={classes.nameContainer}>
-                            <span>Ordu</span>
-                        </div>
-                    </div>
-                </div>
+                    );
+                })}
             </div>
         </div>
     );

@@ -1,11 +1,11 @@
 import { createUseStyles } from "react-jss";
 
 const useStyle = createUseStyles({
-    welcomeContainer: {
+    container: {
         backgroundColor: ({ colors }) => colors.secondary,
         padding: "10rem 8rem 4rem 8rem",
     },
-    welcomeContentContainer: {
+    contentContainer: {
         justifyContent: "space-between",
         alignItems: "center",
         display: "flex",
