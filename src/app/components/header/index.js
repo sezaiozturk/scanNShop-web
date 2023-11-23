@@ -4,6 +4,7 @@ import { changeLocale } from "../../redux/locale/localeSlice";
 import { useSelector, useDispatch } from "react-redux";
 import Switcher from "../switcher";
 import { changeTheme } from "../../redux/theme/themeSlice";
+import { Link } from "react-router-dom";
 
 const Header = () => {
     const colors = useSelector(({ theme }) => theme.colors);
@@ -15,17 +16,23 @@ const Header = () => {
         <div className={classes.container}>
             <div className={classes.contentContainer}>
                 <div className={classes.logoContainer}>
-                    <span className={classes.logo}>ScanNShop</span>
+                    <Link to={"/"}>
+                        <span className={classes.logo}>ScanNShop</span>
+                    </Link>
                 </div>
                 <div className={classes.menuContainer}>
-                    <Button
-                        title={language.login}
-                        variant="outlined"
-                        onClick={() => {
-                            console.log("run");
-                        }}
-                    />
-                    <Button title={language.signup} onClick={() => {}} />
+                    <Link to={"login"}>
+                        <Button
+                            title={language.login}
+                            variant="outlined"
+                            onClick={() => {
+                                console.log("run");
+                            }}
+                        />
+                    </Link>
+                    <Link to={"signup"}>
+                        <Button title={language.signup} />
+                    </Link>
                     <div className={classes.settings}>
                         <Button
                             variant="ghost"
