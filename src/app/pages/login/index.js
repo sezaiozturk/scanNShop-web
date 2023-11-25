@@ -15,7 +15,7 @@ const Login = () => {
                 password,
             })
             .then((res) => {
-                console.log(res);
+                nav(`/admin/${res.data[0]._id}`);
             })
             .catch((err) => {
                 console.log(err);

@@ -1,11 +1,12 @@
 import { Routes, Route } from "react-router-dom";
-import { Home, Signup, Login } from "../pages";
+import { Home, Signup, Login, Admin } from "../pages";
 const Navigation = () => {
     return (
         <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/signup" element={<Signup />} />
             <Route path="/login" element={<Login />} />
+            <Route path="/admin/:id" element={<Admin />} />
             <Route
                 path="*"
                 element={

@@ -4,6 +4,7 @@ const cors = require("cors");
 const app = express();
 
 const CompanyModel = require("./models/Company");
+const ProductModel = require("./models/Product");
 
 app.use(cors());
 app.use(express.json());
@@ -26,14 +27,32 @@ app.post("/login", (req, res) => {
     CompanyModel.find({ email: req.body.email })
         .then((company) => {
             if (req.body.password == company[0].password) {
-                console.log("şifre doğru");
+                res.json(company);
             } else {
-                console.log("şifre yanlış");
+                res.json({ message: "şifre yanlış" });
             }
-            res.json(company);
         })
         .catch((err) => {
-            console.log(company);
+            res.json(err);
+        });
+});
+
+app.post("/admin/add", (req, res) => {
+    ProductModel.create(req.body)
+        .then((product) => {
+            res.json(product);
+        })
+        .catch((err) => {
+            res.json(err);
+        });
+});
+
+app.post("/admin/find", (req, res) => {
+    ProductModel.find({ id: req.body.id })
+        .then((products) => {
+            res.json(products);
+        })
+        .catch((err) => {
             res.json(err);
         });
 });
