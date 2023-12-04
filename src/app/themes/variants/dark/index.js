@@ -11,6 +11,11 @@ const colors = {
     black200: "#2A2A2A",
     gray: "#808080",
     gray100: "#F5F5F5",
+    pink: "#FF00B8",
+    green: "#03BA1D",
+    red: "#F00",
+    khaki: "#9E9807",
+    boxShadow: "rgba(255, 255, 255, 0.2)",
 };
 const dark = {
     key: "dark",

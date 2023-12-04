@@ -7,14 +7,17 @@ import Navigation from "./navigations";
 function App() {
     const colors = useSelector(({ theme }) => theme.colors);
     const language = useSelector(({ locale }) => locale.language);
+    const isAuthentication = useSelector(
+        ({ authentication }) => authentication.company
+    );
     const classes = useStyle();
 
     const dispatch = useDispatch();
     return (
         <div className={classes.container}>
-            <Header />
+            {!isAuthentication && <Header />}
             <Navigation />
-            <Footer />
+            {!isAuthentication && <Footer />}
         </div>
     );
 }

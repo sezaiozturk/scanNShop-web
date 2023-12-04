@@ -1,11 +1,14 @@
 import axios from "axios";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { setCompany } from "../../redux/authentication/authenticationSlice";
+import { useDispatch } from "react-redux";
 
 const Login = () => {
     const [email, setemail] = useState("ozturksezai@gmail.com");
     const [password, setpassword] = useState("1234554321");
     const nav = useNavigate();
+    const dispatch = useDispatch();
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -15,7 +18,9 @@ const Login = () => {
                 password,
             })
             .then((res) => {
-                nav(`/admin/${res.data[0]._id}`);
+                const company = res.data[0];
+                nav(`/admin/${company._id}`);
+                dispatch(setCompany(company));
             })
             .catch((err) => {
                 console.log(err);
@@ -33,7 +38,7 @@ const Login = () => {
                 width: "40%",
             }}
         >
-            <h1>Kayıt Formu</h1>
+            <h1>Giriş Yap</h1>
             <form
                 onSubmit={handleSubmit}
                 style={{ display: "flex", flexDirection: "column", gap: 25 }}

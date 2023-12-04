@@ -52,6 +52,16 @@ const useStyle = createUseStyles(
                 textDecoration: "none",
                 padding: 0,
                 margin: 0,
+                "&::-webkit-scrollbar": {
+                    width: "5px",
+                },
+                "&::-webkit-scrollbar-thumb": {
+                    backgroundColor: "gray",
+                    borderRadius: "5px",
+                },
+                "&::-webkit-scrollbar-track": {
+                    backgroundColor: "#f0f0f0",
+                },
             },
             html: {
                 fontSize: "62.5%",

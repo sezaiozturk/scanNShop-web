@@ -6,6 +6,7 @@ const Button = ({
     variant = "filled",
     iconSize = "fa-xl",
     reverse = false,
+    visible = true,
     disabled,
     loading,
     onClick,
@@ -25,22 +26,24 @@ const Button = ({
     };
 
     return (
-        <div className={classes.container}>
-            <button
-                className={classes[variant]}
-                onClick={onClick}
-                disabled={disabled || loading}
-                style={combinedStyle}
-            >
-                {icon && (
-                    <i
-                        className={`${icon} ${iconSize}`}
-                        style={{ color: iconColor }}
-                    ></i>
-                )}
-                {title && <span>{title}</span>}
-            </button>
-        </div>
+        visible && (
+            <div className={classes.container}>
+                <button
+                    className={classes[variant]}
+                    onClick={onClick}
+                    disabled={disabled || loading}
+                    style={combinedStyle}
+                >
+                    {icon && (
+                        <i
+                            className={`${icon} ${iconSize}`}
+                            style={{ color: iconColor }}
+                        ></i>
+                    )}
+                    {title && <span>{title}</span>}
+                </button>
+            </div>
+        )
     );
 };
 export default Button;

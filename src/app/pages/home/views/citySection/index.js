@@ -24,7 +24,6 @@ const CitySection = () => {
                 name: "Antalya",
             },
         ],
-
         [
             {
                 id: "isparta",
@@ -40,12 +39,15 @@ const CitySection = () => {
         <div className={classes.cityContainer}>
             <span className={classes.cityTitle}>{language.city}</span>
             <div className={classes.cityContentContainer}>
-                {cities.map((row) => {
+                {cities.map((row, index) => {
                     return (
-                        <div className={classes.row}>
-                            {row.map((city) => {
+                        <div key={index} className={classes.row}>
+                            {row.map((city, index) => {
                                 return (
-                                    <div className={classes.cityBox}>
+                                    <div
+                                        key={index}
+                                        className={classes.cityBox}
+                                    >
                                         <img
                                             className={classes.cityPhoto}
                                             src={`./assets/images/${city.id}.jpeg`}

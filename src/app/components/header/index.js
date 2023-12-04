@@ -22,13 +22,7 @@ const Header = () => {
                 </div>
                 <div className={classes.menuContainer}>
                     <Link to={"login"}>
-                        <Button
-                            title={language.login}
-                            variant="outlined"
-                            onClick={() => {
-                                console.log("run");
-                            }}
-                        />
+                        <Button title={language.login} variant="outlined" />
                     </Link>
                     <Link to={"signup"}>
                         <Button title={language.signup} />
