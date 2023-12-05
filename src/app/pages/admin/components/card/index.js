@@ -20,9 +20,9 @@ const Card = ({
             className={classes.container}
             onClick={handleProductSelect}
         >
-            <div
+            <span
                 className={isSelected ? classes.filter2 : classes.filter}
-            ></div>
+            ></span>
             <img src={image} className={classes.photo} />
             <span className={classes.name}>{name}</span>
             <div className={classes.priceContainer}>

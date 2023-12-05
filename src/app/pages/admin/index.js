@@ -5,6 +5,8 @@ import useStyle from "./stylesheet";
 import { useDispatch, useSelector } from "react-redux";
 import { Button } from "../../components";
 import Card from "./components/card";
+import { createModal, useModals } from "../../utils/modal";
+import Modal from "../../modals";
 
 const Admin = () => {
     const { id } = useParams();
@@ -24,6 +26,9 @@ const Admin = () => {
     const dispatch = useDispatch();
     const [image, setImage] = useState(null);
     const [selectedProduct, setSelectedProduct] = useState(null);
+
+    const modals = useModals();
+    console.log(modals);
 
     useEffect(() => {
         productList();
@@ -72,7 +77,7 @@ const Admin = () => {
     };
     const renderProductCards = () => {
         const rows = [];
-        const productsPerPage = 5;
+        const productsPerPage = 6;
 
         for (let i = 0; i < list.length; i += productsPerPage) {
             const products = list.slice(i, i + productsPerPage);
@@ -132,26 +137,30 @@ const Admin = () => {
                         />
                     </div>
                     <div className={classes.contentContainer}>
-                        <div>
-                            <div style={{}}>
-                                <Button title="Ürün Ekle" />
-                                <Button
-                                    title="Sil"
-                                    variant="outlined"
-                                    visible={selectedProduct}
-                                />
-                                <Button
-                                    title="Güncelle"
-                                    variant="outlined"
-                                    visible={selectedProduct}
-                                />
-                                <Button
-                                    title="X"
-                                    variant="outlined"
-                                    visible={selectedProduct}
-                                    onClick={() => setSelectedProduct(null)}
-                                />
-                            </div>
+                        <div className={classes.menuContainer}>
+                            <Button
+                                title="Ürün Ekle"
+                                onClick={() => createModal("product")}
+                            />
+                            {modals.length > 0 && <Modal />}
+                            <Button
+                                title="Sil"
+                                variant="outlined"
+                                visible={selectedProduct}
+                            />
+                            <Button
+                                title="Güncelle"
+                                variant="outlined"
+                                visible={selectedProduct}
+                            />
+                            <Button
+                                title="X"
+                                variant="outlined"
+                                visible={selectedProduct}
+                                onClick={() => setSelectedProduct(null)}
+                            />
+                        </div>
+                        <div className={classes.cardContainer}>
                             {renderProductCards()}
                         </div>
                     </div>

@@ -35,7 +35,7 @@ const useStyle = createUseStyles(
         rightContainer: {
             backgroundColor: ({ colors }) => colors.gray100,
             borderRadius: "30px 0 0 30px",
-            padding: "0 3rem 2rem 3rem",
+            padding: "0 3rem 1rem 3rem",
             flexDirection: "column",
             display: "flex",
             height: "100%",
@@ -65,14 +65,25 @@ const useStyle = createUseStyles(
         },
         contentContainer: {
             backgroundColor: ({ colors }) => colors.secondary,
-            borderRadius: 30,
+            flexDirection: "column",
+            borderRadius: 15,
+            padding: "0.5rem 2rem",
+            display: "flex",
             height: "100%",
             width: "100%",
-            padding: "2rem",
-            gap: "3rem",
+            overflow: "hidden",
+        },
+        menuContainer: {
             display: "flex",
-            flexDirection: "column",
+            gap: "1.5rem",
+            width: "100%",
+            padding: "1rem 0",
+        },
+        cardContainer: {
             overflowY: "scroll",
+            flexDirection: "column",
+            display: "flex",
+            gap: "1.5rem",
             "&::-webkit-scrollbar": {
                 width: "3px",
             },
@@ -82,10 +93,6 @@ const useStyle = createUseStyles(
             },
             "&::-webkit-scrollbar-track": {
                 backgroundColor: "#f0f0f0",
-            },
-            "&:div": {
-                display: "flex",
-                gap: "1.5rem",
             },
         },
         row: {

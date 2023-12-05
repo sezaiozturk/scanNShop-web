@@ -10,7 +10,6 @@ const useStyle = createUseStyles(
             borderRadius: 10,
             display: "flex",
             padding: 15,
-            gap: 18,
         },
         filter: {
             background:

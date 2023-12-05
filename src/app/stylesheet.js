@@ -46,7 +46,6 @@ const useStyle = createUseStyles(
                 },
             ],
             "*": {
-                transition: "all 0.5s",
                 scrollBehavior: "smooth",
                 boxSizing: "border-box",
                 textDecoration: "none",
@@ -62,6 +61,9 @@ const useStyle = createUseStyles(
                 "&::-webkit-scrollbar-track": {
                     backgroundColor: "#f0f0f0",
                 },
+            },
+            div: {
+                transition: "all 0.5s",
             },
             html: {
                 fontSize: "62.5%",
