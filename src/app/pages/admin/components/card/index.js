@@ -1,4 +1,4 @@
-import { useSelector } from "react-redux";
+import { useColors } from "../../../../utils/setting";
 import useStyle from "./stylesheet";
 const Card = ({
     handleProductSelect,
@@ -9,7 +9,7 @@ const Card = ({
     index,
     name,
 }) => {
-    const colors = useSelector(({ theme }) => theme.colors);
+    const colors = useColors();
     const tagColors = [colors.pink, colors.green, colors.red, colors.khaki];
     const tagColor = tagColors[index % 4];
     const classes = useStyle({ colors, tagColor });

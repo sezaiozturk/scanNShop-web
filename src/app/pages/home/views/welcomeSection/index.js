@@ -1,9 +1,9 @@
-import { useSelector } from "react-redux";
 import useStyle from "./stylesheet";
+import { useColors, useLanguage } from "../../../../utils/setting";
 
 const WelcomeSection = () => {
-    const colors = useSelector(({ theme }) => theme.colors);
-    const language = useSelector(({ locale }) => locale.language);
+    const colors = useColors();
+    const language = useLanguage();
     const classes = useStyle({ colors });
     return (
         <div className={classes.container}>

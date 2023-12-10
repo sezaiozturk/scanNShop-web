@@ -34,7 +34,7 @@ const useStyle = createUseStyles(
         },
         rightContainer: {
             backgroundColor: ({ colors }) => colors.gray100,
-            borderRadius: "30px 0 0 30px",
+            borderRadius: "10px 0 0 10px",
             padding: "0 3rem 1rem 3rem",
             flexDirection: "column",
             display: "flex",
@@ -96,6 +96,7 @@ const useStyle = createUseStyles(
             },
         },
         row: {
+            padding: "0.5rem",
             display: "flex",
             gap: "3rem",
         },

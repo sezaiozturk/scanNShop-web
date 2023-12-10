@@ -1,4 +1,4 @@
-import { useSelector } from "react-redux";
+import { useColors } from "../../utils/setting";
 import useStyle from "./stylesheet";
 const Button = ({
     alignSelf = "baseline",
@@ -6,6 +6,7 @@ const Button = ({
     variant = "filled",
     iconSize = "fa-xl",
     reverse = false,
+    type = "button",
     visible = true,
     disabled,
     loading,
@@ -13,8 +14,8 @@ const Button = ({
     title,
     icon,
 }) => {
-    const colors = useSelector(({ theme }) => theme.colors);
     //const typography = useSelector(({ theme }) => theme.typography);
+    const colors = useColors();
     const classes = useStyle({ colors });
     const opacity = disabled || loading ? 0.6 : null;
     const flexDirection = reverse ? "row-reverse" : null;
@@ -33,6 +34,7 @@ const Button = ({
                     onClick={onClick}
                     disabled={disabled || loading}
                     style={combinedStyle}
+                    type={type}
                 >
                     {icon && (
                         <i

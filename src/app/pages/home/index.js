@@ -1,11 +1,11 @@
-import { useSelector } from "react-redux";
 import useStyle from "./stylesheet";
 import { CitySection, PartnerSection, WelcomeSection } from "./views";
 import MobileSection from "./views/mobileSection";
+import { useColors, useLanguage } from "../../utils/setting";
 
 const Home = () => {
-    const colors = useSelector(({ theme }) => theme.colors);
-    const language = useSelector(({ locale }) => locale.language);
+    const colors = useColors();
+    const language = useLanguage();
     const classes = useStyle({ colors });
     return (
         <div className={classes.container}>

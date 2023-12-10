@@ -1,17 +1,20 @@
 import Button from "../button";
 import useStyle from "./stylesheet";
-import { changeLocale } from "../../redux/locale/localeSlice";
-import { useSelector, useDispatch } from "react-redux";
 import Switcher from "../switcher";
-import { changeTheme } from "../../redux/theme/themeSlice";
 import { Link } from "react-router-dom";
+import {
+    useColors,
+    useLanguage,
+    useActiveLanguage,
+    changeThemes,
+    changeLocales,
+} from "../../utils/setting";
 
 const Header = () => {
-    const colors = useSelector(({ theme }) => theme.colors);
-    const language = useSelector(({ locale }) => locale.language);
-    const activeLanguage = useSelector(({ locale }) => locale.activeLanguage);
+    const colors = useColors();
+    const language = useLanguage();
+    const activeLanguage = useActiveLanguage();
     const classes = useStyle({ colors });
-    const dispatch = useDispatch();
     return (
         <div className={classes.container}>
             <div className={classes.contentContainer}>
@@ -34,11 +37,9 @@ const Header = () => {
                             icon={"fa-solid fa-globe"}
                             iconColor={colors.icon}
                             iconSize="fa-2x"
-                            onClick={() => {
-                                dispatch(changeLocale());
-                            }}
+                            onClick={changeLocales}
                         />
-                        <Switcher onClick={() => dispatch(changeTheme())} />
+                        <Switcher onClick={changeThemes} />
                     </div>
                 </div>
             </div>

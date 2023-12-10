@@ -1,16 +1,17 @@
-import { useSelector } from "react-redux";
+import { useColors, useLanguage } from "../../utils/setting";
+
 import useStyle from "./stylesheet";
 
 const Footer = () => {
-    const colors = useSelector(({ theme }) => theme.colors);
-    const language = useSelector(({ locale }) => locale.language);
+    const colors = useColors();
+    const language = useLanguage();
     const classes = useStyle({ colors });
     return (
         <div className={classes.container}>
             <div className={classes.contentContainer}>
                 <div className={classes.logoContainer}>
                     <img
-                        src="./assets/images/logo.png"
+                        src="/assets/images/logo.png"
                         alt="logo"
                         className={classes.logo}
                     />

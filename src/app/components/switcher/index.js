@@ -1,11 +1,9 @@
-import { useDispatch, useSelector } from "react-redux";
+import { useColors, changeThemes } from "../../utils/setting";
 import useStyle from "./stylesheet";
 import { useState } from "react";
-import { changeTheme } from "../../redux/theme/themeSlice";
-const Switcher2 = ({ onClick }) => {
-    const colors = useSelector(({ theme }) => theme.colors);
+const Switcher = ({ onClick }) => {
+    const colors = useColors();
     const [toggle, setToggle] = useState(0);
-    const dispatch = useDispatch();
 
     const classes = useStyle({ colors, toggle });
 
@@ -15,7 +13,7 @@ const Switcher2 = ({ onClick }) => {
             className={classes.container}
             onClick={() => {
                 setToggle(toggle === 0 ? 100 : 0);
-                dispatch(changeTheme());
+                changeThemes();
             }}
         >
             <div className={classes.circle}>
@@ -34,4 +32,4 @@ const Switcher2 = ({ onClick }) => {
         </div>
     );
 };
-export default Switcher2;
+export default Switcher;
