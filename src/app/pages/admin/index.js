@@ -37,6 +37,22 @@ const Admin = () => {
                 console.log(err);
             });
     };
+    const deleteProduct = () => {
+        axios
+            .post("http://localhost:3001/admin/delete", {
+                _id: selectedProduct._id,
+            })
+            .then((res) => {
+                let newList = [];
+                newList = list.filter((item) => item._id !== res.data._id);
+                setList(newList);
+                setSelectedProduct(null);
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+    };
+
     const renderProductCards = () => {
         const rows = [];
         const productsPerPage = 6;
@@ -49,12 +65,16 @@ const Admin = () => {
                         <Card
                             index={index}
                             productId={product._id}
-                            selectedProductId={selectedProduct}
+                            selectedProductId={
+                                selectedProduct === null
+                                    ? null
+                                    : selectedProduct._id
+                            }
                             image={product.image}
                             name={product.name}
                             price={product.price}
                             handleProductSelect={() =>
-                                setSelectedProduct(product._id)
+                                setSelectedProduct(product)
                             }
                         />
                     ))}
@@ -107,6 +127,7 @@ const Admin = () => {
                                         list,
                                         setList,
                                         companyId,
+                                        page: "add",
                                     })
                                 }
                             />
@@ -115,11 +136,22 @@ const Admin = () => {
                                 title="Sil"
                                 variant="outlined"
                                 visible={selectedProduct}
+                                onClick={deleteProduct}
                             />
                             <Button
                                 title="Güncelle"
                                 variant="outlined"
                                 visible={selectedProduct}
+                                onClick={() => {
+                                    createModal("product", {
+                                        list,
+                                        setList,
+                                        setSelectedProduct,
+                                        companyId,
+                                        page: "update",
+                                        product: selectedProduct,
+                                    });
+                                }}
                             />
                             <Button
                                 title="X"

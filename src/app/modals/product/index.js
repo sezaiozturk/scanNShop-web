@@ -1,6 +1,6 @@
 import axios from "axios";
 import { Button, TextInput } from "../../components";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useColors, useLanguage } from "../../utils/setting";
 import useStyle from "./stylesheet";
 
@@ -8,16 +8,25 @@ const ProductModal = ({ data, close }) => {
     const colors = useColors();
     const language = useLanguage();
     const classes = useStyle({ colors });
-    const label = { padding: "5px 0", fontSize: 20 };
-    const container = { display: "flex", justifyContent: "space-between" };
-    const input = { width: 300 };
-    const { list, setList, companyId } = data;
+    const { list, setList, setSelectedProduct, companyId, page, product } =
+        data;
 
-    const [barkod, setBarkod] = useState("201213096");
-    const [name, setName] = useState("muz");
-    const [price, setPrice] = useState("100");
+    const [barkod, setBarkod] = useState();
+    const [name, setName] = useState();
+    const [price, setPrice] = useState();
     const [image, setImage] = useState(null);
-    const [category, setCategory] = useState("sebze");
+    const [category, setCategory] = useState();
+
+    useEffect(() => {
+        if (page === "update") {
+            const { category, image, barkod, name, price } = product;
+            setCategory(category);
+            setImage(image);
+            setBarkod(barkod);
+            setName(name);
+            setPrice(price);
+        }
+    }, []);
 
     const handleFileInputChange = (e) => {
         const file = e.target.files[0];
@@ -32,25 +41,52 @@ const ProductModal = ({ data, close }) => {
     };
 
     const handleSubmit = (e) => {
-        console.log("submit oldu");
         e.preventDefault();
-        axios
-            .post("http://localhost:3001/admin/add", {
-                companyId,
-                category,
-                image,
-                barkod,
-                name,
-                price,
-                date: new Date(),
-            })
-            .then((res) => {
-                setList([...list, res.data]);
-                close();
-            })
-            .catch((err) => {
-                console.log(err);
-            });
+        if (page === "add") {
+            axios
+                .post("http://localhost:3001/admin/add", {
+                    companyId,
+                    category,
+                    image,
+                    barkod,
+                    name,
+                    price,
+                    date: new Date(),
+                })
+                .then((res) => {
+                    setList([...list, res.data]);
+                    close();
+                })
+                .catch((err) => {
+                    console.log(err);
+                });
+        } else {
+            axios
+                .post("http://localhost:3001/admin/update", {
+                    _id: product._id,
+                    companyId,
+                    category,
+                    image,
+                    barkod,
+                    name,
+                    price,
+                })
+                .then((res) => {
+                    const updatedProduct = res.data;
+                    let updatedList = list.map((product) => {
+                        if (product._id === updatedProduct._id) {
+                            return { ...updatedProduct };
+                        }
+                        return product;
+                    });
+                    setList(updatedList);
+                    setSelectedProduct(null);
+                    close();
+                })
+                .catch((err) => {
+                    console.log(err);
+                });
+        }
     };
 
     return (
@@ -87,24 +123,28 @@ const ProductModal = ({ data, close }) => {
                     id={"barkod"}
                     type="text"
                     onChangeText={(e) => setBarkod(e.target.value)}
+                    value={barkod}
                 />
                 <TextInput
                     title={"Ürün Kategorisi:"}
                     id={"category"}
                     type="text"
                     onChangeText={(e) => setCategory(e.target.value)}
+                    value={category}
                 />
                 <TextInput
                     title={"Ürün Adı:"}
                     id={"name"}
                     type="text"
                     onChangeText={(e) => setName(e.target.value)}
+                    value={name}
                 />
                 <TextInput
                     title={"Ürün Fiyatı:"}
                     id={"price"}
                     type="number"
                     onChangeText={(e) => setPrice(e.target.value)}
+                    value={price}
                 />
                 <div className={classes.buttonContainer}>
                     <Button
@@ -112,7 +152,10 @@ const ProductModal = ({ data, close }) => {
                         variant="outlined"
                         onClick={close}
                     />
-                    <Button title={"Kaydet"} type="submit" />
+                    <Button
+                        title={page === "add" ? "Kaydet" : "Güncelle"}
+                        type="submit"
+                    />
                 </div>
             </form>
         </div>

@@ -47,9 +47,36 @@ app.post("/admin/add", (req, res) => {
 });
 
 app.post("/admin/find", (req, res) => {
-    ProductModel.find({ id: req.body.id })
+    ProductModel.find({ companyId: req.body.companyId })
         .then((products) => {
             res.json(products);
+            console.log(products);
+        })
+        .catch((err) => {
+            res.json(err);
+        });
+});
+app.post("/admin/delete", (req, res) => {
+    const { _id } = req.body;
+    ProductModel.findByIdAndDelete({ _id })
+        .then((product) => {
+            res.json(product);
+        })
+        .catch((err) => {
+            res.json(err);
+        });
+});
+app.post("/admin/update", (req, res) => {
+    const { _id, companyId, category, image, barkod, name, price, date } =
+        req.body;
+
+    ProductModel.findByIdAndUpdate(
+        { _id },
+        { companyId, category, image, barkod, name, price, date },
+        { new: true }
+    )
+        .then((product) => {
+            res.json(product);
         })
         .catch((err) => {
             res.json(err);

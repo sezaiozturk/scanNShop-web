@@ -42,7 +42,7 @@ const useStyle = createUseStyles(
             backgroundColor: ({ tagColor }) => tagColor,
             padding: "3px 20px",
             borderRadius: 15,
-            "& span": {
+            "& span:nth-child(1)": {
                 color: ({ colors }) => colors.white,
                 fontSize: "1.8rem",
             },
