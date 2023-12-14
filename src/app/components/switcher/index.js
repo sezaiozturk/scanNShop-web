@@ -1,3 +1,4 @@
+import { FaMoon, FaSun } from "react-icons/fa";
 import { useColors, changeThemes } from "../../utils/setting";
 import useStyle from "./stylesheet";
 import { useState } from "react";
@@ -18,15 +19,9 @@ const Switcher = ({ onClick }) => {
         >
             <div className={classes.circle}>
                 {toggle === 0 ? (
-                    <i
-                        className="fa-solid fa-sun fa-lg"
-                        style={{ color: colors.secondary }}
-                    ></i>
+                    <FaSun size="1.2rem" color={colors.secondary} />
                 ) : (
-                    <i
-                        className="fa-solid fa-moon fa-lg"
-                        style={{ color: colors.secondary }}
-                    ></i>
+                    <FaMoon size="1.2rem" color={colors.secondary} />
                 )}
             </div>
         </div>

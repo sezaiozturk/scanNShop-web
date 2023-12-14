@@ -8,6 +8,8 @@ import { createModal, useModals } from "../../utils/modal";
 import Modal from "../../modals";
 import { useColors, useLanguage } from "../../utils/setting";
 import { useSelector } from "react-redux";
+import { FaCaretDown } from "react-icons/fa";
+import { IoIosClose } from "react-icons/io";
 
 const Admin = () => {
     const { companyId } = useParams();
@@ -113,8 +115,12 @@ const Admin = () => {
                         <Button
                             title={"Sezai Öztürk"}
                             variant="ghost"
-                            icon={"fa-solid fa-caret-down"}
-                            iconColor="green"
+                            icon={
+                                <FaCaretDown
+                                    size={"1.5rem"}
+                                    color={colors.primary}
+                                />
+                            }
                             reverse
                         />
                     </div>
@@ -154,10 +160,18 @@ const Admin = () => {
                                 }}
                             />
                             <Button
-                                title="X"
                                 variant="outlined"
                                 visible={selectedProduct}
+                                icon={
+                                    <IoIosClose
+                                        size="2.5rem"
+                                        color={colors.primary}
+                                    />
+                                }
                                 onClick={() => setSelectedProduct(null)}
+                                style={{
+                                    padding: "0.5rem 1rem",
+                                }}
                             />
                         </div>
                         <div className={classes.cardContainer}>

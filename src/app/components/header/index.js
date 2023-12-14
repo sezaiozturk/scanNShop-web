@@ -1,6 +1,7 @@
 import Button from "../button";
 import useStyle from "./stylesheet";
 import Switcher from "../switcher";
+import { FaMoon, FaGlobe } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import {
     useColors,
@@ -34,9 +35,7 @@ const Header = () => {
                         <Button
                             variant="ghost"
                             title={activeLanguage.toUpperCase()}
-                            icon={"fa-solid fa-globe"}
-                            iconColor={colors.icon}
-                            iconSize="fa-2x"
+                            icon={<FaGlobe size="2rem" color={colors.icon} />}
                             onClick={changeLocales}
                         />
                         <Switcher onClick={changeThemes} />

@@ -2,17 +2,14 @@ import { useColors } from "../../utils/setting";
 import useStyle from "./stylesheet";
 const Button = ({
     alignSelf = "baseline",
-    iconColor = "#F5F5F5",
     variant = "filled",
-    iconSize = "fa-xl",
     reverse = false,
-    type = "button",
     visible = true,
     disabled,
     loading,
-    onClick,
     title,
     icon,
+    ...props
 }) => {
     //const typography = useSelector(({ theme }) => theme.typography);
     const colors = useColors();
@@ -31,17 +28,11 @@ const Button = ({
             <div className={classes.container}>
                 <button
                     className={classes[variant]}
-                    onClick={onClick}
                     disabled={disabled || loading}
                     style={combinedStyle}
-                    type={type}
+                    {...props}
                 >
-                    {icon && (
-                        <i
-                            className={`${icon} ${iconSize}`}
-                            style={{ color: iconColor }}
-                        ></i>
-                    )}
+                    {icon}
                     {title && <span>{title}</span>}
                 </button>
             </div>
@@ -60,4 +51,11 @@ export default Button;
 
                 {loading && <i className="fa-solid fa-spinner"></i>}
                 {icon && <i className="fa-solid fa-close"></i>}
+
+                {icon && (
+                        <i
+                            className={`${icon} ${iconSize}`}
+                            style={{ color: iconColor }}
+                        ></i>
+                    )}
  */
