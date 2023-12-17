@@ -1,33 +1,32 @@
+import { useField } from "formik";
 import { useColors } from "../../utils/setting";
 import useStyle from "./stylesheet";
 
-const TextInput = ({
-    id,
-    title,
-    type = "text",
-    onChangeText,
-    value,
-    error,
-}) => {
+const TextInput = ({ label, id, error, ...props }) => {
     const colors = useColors();
     const classes = useStyle({ colors });
+    const [field, meta] = useField(props);
 
     return (
         <div className={classes.container}>
             <div className={classes.titleContainer}>
-                {error && <span>*</span>}
                 <label className={classes.label} htmlFor={id}>
-                    {title}
+                    {label}
                 </label>
             </div>
             <input
-                className={classes.input}
+                className={
+                    meta.error && meta.touched
+                        ? classes.errorInput
+                        : classes.input
+                }
+                {...props}
+                {...field}
                 id={id}
-                name={id}
-                type={type}
-                value={value}
-                onChange={onChangeText}
             />
+            {meta.touched && meta.error ? (
+                <div className={classes.error}> * {meta.error}</div>
+            ) : null}
         </div>
     );
 };

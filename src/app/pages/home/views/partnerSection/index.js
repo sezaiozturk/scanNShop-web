@@ -10,8 +10,8 @@ const PartnerSection = () => {
         <div className={classes.container}>
             <span className={classes.title}>{language.advert}</span>
             <img
-                src="./assets/images/advert.svg"
-                alt="advert"
+                src="./assets/images/partner.svg"
+                alt="partner"
                 className={classes.photo}
             />
             <div className={classes.space} />

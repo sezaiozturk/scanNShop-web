@@ -50,7 +50,6 @@ app.post("/admin/find", (req, res) => {
     ProductModel.find({ companyId: req.body.companyId })
         .then((products) => {
             res.json(products);
-            console.log(products);
         })
         .catch((err) => {
             res.json(err);

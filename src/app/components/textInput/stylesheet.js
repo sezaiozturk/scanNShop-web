@@ -11,7 +11,10 @@ const useStyle = createUseStyles(
         titleContainer: {
             display: "flex",
             gap: "1rem",
-            padding: "0 0.5rem",
+            padding: "0 1rem",
+            backgroundColor: "white",
+            position: "absolute",
+            transform: "translate(10px, -50%)",
             "& span": {
                 color: "red",
                 fontSize: "2rem",
@@ -35,6 +38,22 @@ const useStyle = createUseStyles(
                 border: ({ colors }) => `2px solid ${colors.primary}`,
             },
             boxSizing: "border-box !important",
+        },
+        errorInput: {
+            backgroundColor: ({ colors }) => colors.secondary,
+            border: ({ colors }) => `1px solid red`,
+            color: ({ colors }) => colors.black,
+            fontFamily: "poppins-medium",
+            padding: "0.8rem 1rem",
+            borderRadius: 10,
+            outline: "none",
+            fontSize: 16,
+            "&:focus": {
+                border: ({ colors }) => `2px solid red`,
+            },
+        },
+        error: {
+            color: "red",
         },
     },
     { name: "Component-TextInput" }

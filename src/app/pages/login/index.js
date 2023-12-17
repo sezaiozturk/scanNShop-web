@@ -1,17 +1,21 @@
 import axios from "axios";
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { setCompany } from "../../redux/authentication/authenticationSlice";
 import { useDispatch } from "react-redux";
+import { Button, Input, TextInput } from "../../components";
+import { Form, Formik } from "formik";
+import { loginSchema } from "../../schemas/loginSchema";
+import useStyle from "./stylesheet";
+import { useColors } from "../../utils/setting";
 
 const Login = () => {
-    const [email, setemail] = useState("ozturksezai@gmail.com");
-    const [password, setpassword] = useState("1234554321");
     const nav = useNavigate();
     const dispatch = useDispatch();
+    const colors = useColors();
+    const classes = useStyle({ colors });
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
+    const handleSubmit = ({ email, password }, actions) => {
         axios
             .post("http://localhost:3001/login", {
                 email,
@@ -19,6 +23,7 @@ const Login = () => {
             })
             .then((res) => {
                 const company = res.data[0];
+                console.log(company);
                 nav(`/admin/${company._id}`);
                 dispatch(setCompany(company));
             })
@@ -26,54 +31,62 @@ const Login = () => {
                 console.log(err);
             });
     };
-    const label = { padding: "5px 0", fontSize: 20 };
-    const container = { display: "flex", justifyContent: "space-between" };
-    const input = { width: 300 };
 
     return (
-        <div
-            style={{
-                height: "100vh",
-                margin: "100px 0 0 100px",
-                width: "40%",
-            }}
-        >
-            <h1>Giriş Yap</h1>
-            <form
-                onSubmit={handleSubmit}
-                style={{ display: "flex", flexDirection: "column", gap: 25 }}
-            >
-                <div style={container}>
-                    <label style={label}>E posta:</label>
-                    <input
-                        value={email}
-                        onChange={(e) => setemail(e.target.value)}
-                        required
-                        style={input}
-                    />
+        <div className={classes.container}>
+            <div className={classes.centerContainer}>
+                <div className={classes.formContainer}>
+                    <img src="./assets/images/logo.png" />
+                    <span>
+                        ScanNshop İşletme
+                        <br />
+                        Portalına hoş geldiniz
+                    </span>
+                    <Formik
+                        initialValues={{
+                            email: "",
+                            password: "",
+                        }}
+                        validationSchema={loginSchema}
+                        onSubmit={handleSubmit}
+                    >
+                        {() => (
+                            <Form className={classes.form}>
+                                <TextInput
+                                    name="email"
+                                    label="E posta"
+                                    type="text"
+                                    id="email"
+                                />
+                                <TextInput
+                                    name="password"
+                                    label="Şifre"
+                                    type="password"
+                                    id="password"
+                                />
+                                <Button
+                                    type="submit"
+                                    title={"Giriş Yap"}
+                                    alignSelf="stretch"
+                                />
+                            </Form>
+                        )}
+                    </Formik>
                 </div>
-                <div style={container}>
-                    <label style={label}>Şifre:</label>
-                    <input
-                        value={password}
-                        onChange={(e) => setpassword(e.target.value)}
-                        required
-                        style={input}
-                    />
+                <div className={classes.routeContainer}>
+                    <span>
+                        ScanNShop platformuna katılarak yeni müşterilere ulaşın
+                        ve satışlarınızı artırın!
+                    </span>
+                    <Link to={"/signup"}>
+                        <Button
+                            title={"Kayıt Ol"}
+                            variant="outlined"
+                            alignSelf="stretch"
+                        />
+                    </Link>
                 </div>
-                <button
-                    type="submit"
-                    style={{
-                        padding: "10px 20px",
-                        backgroundColor: "green",
-                        color: "white",
-                        fontSize: 20,
-                        textAlign: "center",
-                    }}
-                >
-                    Giriş Yap
-                </button>
-            </form>
+            </div>
         </div>
     );
 };

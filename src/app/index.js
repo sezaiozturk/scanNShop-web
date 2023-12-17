@@ -3,6 +3,7 @@ import { Header, Footer } from "./components";
 import Navigation from "./navigations";
 import { useColors, useLanguage } from "./utils/setting";
 import { useSelector } from "react-redux";
+import { useLocation } from "react-router-dom";
 function App() {
     const colors = useColors();
     const language = useLanguage();
@@ -10,12 +11,13 @@ function App() {
         ({ authentication }) => authentication.company
     );
     const classes = useStyle();
+    const location = useLocation();
 
     return (
         <div className={classes.container}>
-            {!isAuthentication && <Header />}
+            {location.pathname == "/" && <Header />}
             <Navigation />
-            {!isAuthentication && <Footer />}
+            <Footer />
         </div>
     );
 }
