@@ -15,7 +15,8 @@ const Login = () => {
     const colors = useColors();
     const classes = useStyle({ colors });
 
-    const handleSubmit = ({ email, password }, actions) => {
+    const handleSubmit = ({ email, password }, { setSubmitting }) => {
+        setSubmitting(true);
         axios
             .post("http://localhost:3001/login", {
                 email,
@@ -29,7 +30,8 @@ const Login = () => {
             })
             .catch((err) => {
                 console.log(err);
-            });
+            })
+            .finally(() => setSubmitting(false));
     };
 
     return (
@@ -50,7 +52,7 @@ const Login = () => {
                         validationSchema={loginSchema}
                         onSubmit={handleSubmit}
                     >
-                        {() => (
+                        {({ isSubmitting }) => (
                             <Form className={classes.form}>
                                 <TextInput
                                     name="email"
@@ -68,6 +70,7 @@ const Login = () => {
                                     type="submit"
                                     title={"Giriş Yap"}
                                     alignSelf="stretch"
+                                    disabled={isSubmitting}
                                 />
                             </Form>
                         )}

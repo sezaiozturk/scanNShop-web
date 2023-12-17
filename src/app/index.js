@@ -17,7 +17,7 @@ function App() {
         <div className={classes.container}>
             {location.pathname == "/" && <Header />}
             <Navigation />
-            <Footer />
+            {!isAuthentication && <Footer />}
         </div>
     );
 }

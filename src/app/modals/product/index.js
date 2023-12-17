@@ -3,13 +3,20 @@ import { Button, TextInput } from "../../components";
 import { useEffect, useState } from "react";
 import { useColors, useLanguage } from "../../utils/setting";
 import useStyle from "./stylesheet";
+import { Form, Formik } from "formik";
 
 const ProductModal = ({ data, close }) => {
     const colors = useColors();
     const language = useLanguage();
     const classes = useStyle({ colors });
-    const { list, setList, setSelectedProduct, companyId, page, product } =
-        data;
+    const {
+        productList,
+        setProductList,
+        setSelectedProduct,
+        companyId,
+        page,
+        product,
+    } = data;
 
     const [barkod, setBarkod] = useState();
     const [name, setName] = useState();
@@ -20,6 +27,7 @@ const ProductModal = ({ data, close }) => {
     useEffect(() => {
         if (page === "update") {
             const { category, image, barkod, name, price } = product;
+
             setCategory(category);
             setImage(image);
             setBarkod(barkod);
@@ -40,8 +48,7 @@ const ProductModal = ({ data, close }) => {
         }
     };
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
+    const handleSubmit = ({ barkod, category, name, price }, actions) => {
         if (page === "add") {
             axios
                 .post("http://localhost:3001/admin/add", {
@@ -54,7 +61,7 @@ const ProductModal = ({ data, close }) => {
                     date: new Date(),
                 })
                 .then((res) => {
-                    setList([...list, res.data]);
+                    setProductList([...productList, res.data]);
                     close();
                 })
                 .catch((err) => {
@@ -73,13 +80,13 @@ const ProductModal = ({ data, close }) => {
                 })
                 .then((res) => {
                     const updatedProduct = res.data;
-                    let updatedList = list.map((product) => {
+                    let updatedList = productList.map((product) => {
                         if (product._id === updatedProduct._id) {
                             return { ...updatedProduct };
                         }
                         return product;
                     });
-                    setList(updatedList);
+                    setProductList(updatedList);
                     setSelectedProduct(null);
                     close();
                 })
@@ -91,73 +98,87 @@ const ProductModal = ({ data, close }) => {
 
     return (
         <div className={classes.container}>
-            <form onSubmit={handleSubmit} className={classes.form}>
-                <div className={classes.imageContainer}>
-                    <label htmlFor="image" className={classes.selectContainer}>
-                        {!image ? (
-                            <div className={classes.select}>
-                                <i
-                                    className={
-                                        "fa-sharp fa-regular fa-images fa-4x"
-                                    }
-                                    style={{ color: colors.gray }}
-                                ></i>
-                                <span>
-                                    Bilgisayarınızdan ürün resmini seçin
-                                </span>
-                            </div>
-                        ) : (
-                            <img className={classes.image} src={image} />
-                        )}
-                    </label>
-                    <input
-                        id="image"
-                        type="file"
-                        accept="image/*"
-                        onChange={handleFileInputChange}
-                        style={{ display: "none" }}
-                    />
-                </div>
-                <TextInput
-                    title={"Ürün kodu:"}
-                    id={"barkod"}
-                    type="text"
-                    onChangeText={(e) => setBarkod(e.target.value)}
-                    value={barkod}
-                />
-                <TextInput
-                    title={"Ürün Kategorisi:"}
-                    id={"category"}
-                    type="text"
-                    onChangeText={(e) => setCategory(e.target.value)}
-                    value={category}
-                />
-                <TextInput
-                    title={"Ürün Adı:"}
-                    id={"name"}
-                    type="text"
-                    onChangeText={(e) => setName(e.target.value)}
-                    value={name}
-                />
-                <TextInput
-                    title={"Ürün Fiyatı:"}
-                    id={"price"}
-                    type="number"
-                    onChangeText={(e) => setPrice(e.target.value)}
-                    value={price}
-                />
-                <div className={classes.buttonContainer}>
-                    <Button
-                        title={"İptal"}
-                        variant="outlined"
-                        onClick={close}
-                    />
-                    <Button
-                        title={page === "add" ? "Kaydet" : "Güncelle"}
-                        type="submit"
-                    />
-                </div>
-            </form>
+            <Formik
+                initialValues={{
+                    barkod: "",
+                    category: "",
+                    name: "",
+                    price: "",
+                }}
+                onSubmit={handleSubmit}
+            >
+                {() => (
+                    <Form className={classes.form}>
+                        <div className={classes.imageContainer}>
+                            <label
+                                htmlFor="image"
+                                className={classes.selectContainer}
+                            >
+                                {!image ? (
+                                    <div className={classes.select}>
+                                        <i
+                                            className={
+                                                "fa-sharp fa-regular fa-images fa-4x"
+                                            }
+                                            style={{ color: colors.gray }}
+                                        ></i>
+                                        <span>
+                                            Bilgisayarınızdan ürün resmini seçin
+                                        </span>
+                                    </div>
+                                ) : (
+                                    <img
+                                        className={classes.image}
+                                        src={image}
+                                    />
+                                )}
+                            </label>
+                            <input
+                                id="image"
+                                type="file"
+                                accept="image/*"
+                                onChange={handleFileInputChange}
+                                style={{ display: "none" }}
+                            />
+                        </div>
+                        <TextInput
+                            name="barkod"
+                            label={"Ürün kodu:"}
+                            id={"barkod"}
+                            type="text"
+                        />
+                        <TextInput
+                            name="category"
+                            label={"Ürün Kategorisi:"}
+                            id={"category"}
+                            type="text"
+                        />
+                        <TextInput
+                            name="name"
+                            label={"Ürün Adı:"}
+                            id={"name"}
+                            type="text"
+                        />
+                        <TextInput
+                            name="price"
+                            label={"Ürün Fiyatı:"}
+                            id={"price"}
+                            type="number"
+                        />
+                        <div className={classes.buttonContainer}>
+                            <Button
+                                title={"İptal"}
+                                variant="outlined"
+                                onClick={close}
+                            />
+                            <Button
+                                title={page === "add" ? "Kaydet" : "Güncelle"}
+                                type="submit"
+                            />
+                        </div>
+                    </Form>
+                )}
+            </Formik>
         </div>
     );
 };

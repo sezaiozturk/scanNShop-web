@@ -25,8 +25,9 @@ const Signup = () => {
             phoneNumber,
             password,
         },
-        actions
+        { setSubmitting }
     ) => {
+        setSubmitting(true);
         axios
             .post("http://localhost:3001/signup", {
                 companyName,
@@ -46,7 +47,8 @@ const Signup = () => {
             })
             .catch((err) => {
                 console.log(err);
-            });
+            })
+            .finally(() => setSubmitting(false));
     };
 
     return (
@@ -91,7 +93,7 @@ const Signup = () => {
                         validationSchema={signupSchema}
                         onSubmit={handleSubmit}
                     >
-                        {() => (
+                        {({ isSubmitting }) => (
                             <Form className={classes.form}>
                                 <TextInput
                                     name="companyName"
@@ -163,6 +165,7 @@ const Signup = () => {
                                     type="submit"
                                     title={"Kayıt Ol"}
                                     alignSelf="stretch"
+                                    disabled={isSubmitting}
                                 />
                             </Form>
                         )}

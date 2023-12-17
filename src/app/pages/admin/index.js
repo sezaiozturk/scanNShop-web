@@ -2,7 +2,7 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import useStyle from "./stylesheet";
-import { Button } from "../../components";
+import { Button, TextInput } from "../../components";
 import Card from "./components/card";
 import { createModal, useModals } from "../../utils/modal";
 import Modal from "../../modals";
@@ -13,7 +13,8 @@ import { IoIosClose } from "react-icons/io";
 
 const Admin = () => {
     const { companyId } = useParams();
-    const [list, setList] = useState([]);
+    const [productList, setProductList] = useState([]);
+    const [tempList, setTempList] = useState([]);
     const colors = useColors();
     const language = useLanguage();
     const currentCompany = useSelector(
@@ -22,23 +23,33 @@ const Admin = () => {
     const classes = useStyle({ colors });
     const [selectedProduct, setSelectedProduct] = useState(null);
     const modals = useModals();
+    const [searchKey, setSearchKey] = useState("");
 
     useEffect(() => {
-        productList();
+        getProduct();
     }, []);
 
-    const productList = () => {
+    useEffect(() => {
+        const temp = productList;
+        const filteredProducts = temp.filter((product) => {
+            return product.name.toLowerCase().includes(searchKey.toLowerCase());
+        });
+        setTempList(filteredProducts);
+    }, [searchKey]);
+
+    const getProduct = () => {
         axios
             .post("http://localhost:3001/admin/find", {
                 companyId,
             })
             .then((res) => {
-                setList(res.data);
+                setProductList(res.data);
             })
             .catch((err) => {
                 console.log(err);
             });
     };
+
     const deleteProduct = () => {
         axios
             .post("http://localhost:3001/admin/delete", {
@@ -46,8 +57,10 @@ const Admin = () => {
             })
             .then((res) => {
                 let newList = [];
-                newList = list.filter((item) => item._id !== res.data._id);
-                setList(newList);
+                newList = productList.filter(
+                    (item) => item._id !== res.data._id
+                );
+                setProductList(newList);
                 setSelectedProduct(null);
             })
             .catch((err) => {
@@ -55,7 +68,7 @@ const Admin = () => {
             });
     };
 
-    const renderProductCards = () => {
+    const renderProductCards = (list) => {
         const rows = [];
         const productsPerPage = 6;
 
@@ -111,7 +124,14 @@ const Admin = () => {
                 <div className={classes.rightContainer}>
                     <div className={classes.topContainer}>
                         <span>Merhaba Sezai,</span>
-                        <div className={classes.search}>Ara...</div>
+                        <input
+                            type="text"
+                            value={searchKey}
+                            onChange={(e) => setSearchKey(e.target.value)}
+                            placeholder="Ara..."
+                            className={classes.search}
+                        />
+
                         <Button
                             title={"Sezai Öztürk"}
                             variant="ghost"
@@ -130,8 +150,8 @@ const Admin = () => {
                                 title="Ürün Ekle"
                                 onClick={() =>
                                     createModal("product", {
-                                        list,
-                                        setList,
+                                        productList,
+                                        setProductList,
                                         companyId,
                                         page: "add",
                                     })
@@ -150,8 +170,8 @@ const Admin = () => {
                                 visible={selectedProduct}
                                 onClick={() => {
                                     createModal("product", {
-                                        list,
-                                        setList,
+                                        productList,
+                                        setProductList,
                                         setSelectedProduct,
                                         companyId,
                                         page: "update",
@@ -175,7 +195,9 @@ const Admin = () => {
                             />
                         </div>
                         <div className={classes.cardContainer}>
-                            {renderProductCards()}
+                            {searchKey.length === 0
+                                ? renderProductCards(productList)
+                                : renderProductCards(tempList)}
                         </div>
                     </div>
                 </div>
