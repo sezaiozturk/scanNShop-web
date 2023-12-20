@@ -2,13 +2,13 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import useStyle from "./stylesheet";
-import { Button, TextInput } from "../../components";
+import { Button, Dropdown, RadioGroup, TextInput } from "../../components";
 import Card from "./components/card";
 import { createModal, useModals } from "../../utils/modal";
 import Modal from "../../modals";
 import { useColors, useLanguage } from "../../utils/setting";
 import { useSelector } from "react-redux";
-import { FaCaretDown } from "react-icons/fa";
+import { FaCaretDown, FaSearch } from "react-icons/fa";
 import { IoIosClose } from "react-icons/io";
 
 const Admin = () => {
@@ -24,6 +24,51 @@ const Admin = () => {
     const [selectedProduct, setSelectedProduct] = useState(null);
     const modals = useModals();
     const [searchKey, setSearchKey] = useState("");
+    //---------------------------------------------------------
+    const [selectedOption, setSelectedOption] = useState("");
+    const [min, setMin] = useState("");
+    const [max, setMax] = useState("");
+    const [control, setControl] = useState(false);
+    const [categories, setCategories] = useState([]);
+    const [radioOptions, setRadioOptions] = useState([]);
+
+    const [selectedCombo, setSelectedCombo] = useState("");
+    const [items, setItems] = useState([
+        { value: "priceAsc", label: "Fiyata Göre Artan" },
+        { value: "priceDesc", label: "Fiyata Göre Azalan" },
+        { value: "dateAsc", label: "Tarihe Göre Artan" },
+        { value: "dateDesc", label: "Tarihe Göre Azalan" },
+    ]);
+
+    const handleComboChange = (e) => {
+        setSelectedCombo(e.target.value);
+        console.log(productList);
+        if (selectedCombo === "priceAsc") {
+            const temp = productList;
+            const sortedByPriceDescending = temp
+                .slice()
+                .sort((a, b) => b.price - a.price);
+            setProductList(sortedByPriceDescending);
+        } else if (selectedCombo === "priceDesc") {
+            const temp = productList;
+            const sortedByPriceAscending = temp
+                .slice()
+                .sort((a, b) => a.price - b.price);
+            setProductList(sortedByPriceAscending);
+        } else if (selectedCombo === "dateAsc") {
+            const temp = productList;
+            const sortedByDateDescending = temp
+                .slice()
+                .sort((a, b) => new Date(b.date) - new Date(a.date));
+            setProductList(sortedByDateDescending);
+        } else {
+            const temp = productList;
+            const sortedByDateAscending = temp
+                .slice()
+                .sort((a, b) => new Date(a.date) - new Date(b.date));
+            setProductList(sortedByDateAscending);
+        }
+    };
 
     useEffect(() => {
         getProduct();
@@ -32,10 +77,56 @@ const Admin = () => {
     useEffect(() => {
         const temp = productList;
         const filteredProducts = temp.filter((product) => {
-            return product.name.toLowerCase().includes(searchKey.toLowerCase());
+            return (
+                product.name.toLowerCase().includes(searchKey.toLowerCase()) ||
+                product.barkod.includes(searchKey)
+            );
         });
         setTempList(filteredProducts);
     }, [searchKey]);
+
+    useEffect(() => {
+        const temp = productList;
+        if (selectedOption == "0") {
+            const filteredProducts = temp.filter((product) => {
+                return product.category == "meyve";
+            });
+            setTempList(filteredProducts);
+        } else if (selectedOption == "1") {
+            const filteredProducts = temp.filter((product) => {
+                return product.category == "sebze";
+            });
+            setTempList(filteredProducts);
+        } else {
+            const filteredProducts = temp.filter((product) => {
+                return product.category == "egzantrik";
+            });
+            setTempList(filteredProducts);
+        }
+    }, [selectedOption]);
+    useEffect(() => {
+        const options = categories.map((category, index) => ({
+            key: index,
+            value: category,
+        }));
+        setRadioOptions(options);
+    }, [categories]);
+
+    const priceFilter = () => {
+        setControl(true);
+        const temp = productList;
+        const filteredProducts = temp.filter((product) => {
+            return product.price >= min && product.price <= max;
+        });
+        setTempList(filteredProducts);
+    };
+
+    const getCategories = (list) => {
+        const categoryList = [
+            ...new Set(list.map((product) => product.category)),
+        ];
+        setCategories(categoryList);
+    };
 
     const getProduct = () => {
         axios
@@ -44,6 +135,7 @@ const Admin = () => {
             })
             .then((res) => {
                 setProductList(res.data);
+                getCategories(res.data);
             })
             .catch((err) => {
                 console.log(err);
@@ -106,7 +198,50 @@ const Admin = () => {
             <div className={classes.container}>
                 <div className={classes.leftContainer}>
                     <span className={classes.companyName}>Çamlık Manav</span>
-                    <div className={classes.filterContainer}></div>
+                    <div className={classes.filterContainer}>
+                        <div className={classes.sectionContainer}>
+                            <span className={classes.title}>Kategori</span>
+                            <RadioGroup
+                                options={radioOptions}
+                                onChange={(e) => setSelectedOption(e)}
+                            />
+                        </div>
+                        <div className={classes.sectionContainer}>
+                            <span className={classes.title}>Fiyat Aralığı</span>
+                            <div className={classes.sectionContentContainer}>
+                                <input
+                                    type="number"
+                                    onChange={(e) => setMin(e.target.value)}
+                                    value={min}
+                                    className={classes.price}
+                                    placeholder="En az"
+                                />
+                                <span style={{ fontSize: 20 }}>-</span>
+                                <input
+                                    type="number"
+                                    onChange={(e) => setMax(e.target.value)}
+                                    value={max}
+                                    placeholder="En çok"
+                                    className={classes.price}
+                                />
+                                <Button
+                                    icon={<FaSearch color="white" size={12} />}
+                                    type="button"
+                                    onClick={priceFilter}
+                                    style={{
+                                        padding: "0.3rem 1rem",
+                                        borderRadius: 5,
+                                    }}
+                                />
+                            </div>
+                        </div>
+                        <div className={classes.sectionContainer}>
+                            <Dropdown
+                                options={radioOptions}
+                                onSelect={(e) => console.log(e)}
+                            />
+                        </div>
+                    </div>
                     <div
                         style={{
                             padding: 15,
@@ -195,7 +330,9 @@ const Admin = () => {
                             />
                         </div>
                         <div className={classes.cardContainer}>
-                            {searchKey.length === 0
+                            {searchKey.length === 0 &&
+                            selectedOption === "" &&
+                            !control
                                 ? renderProductCards(productList)
                                 : renderProductCards(tempList)}
                         </div>

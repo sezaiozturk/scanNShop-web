@@ -6,6 +6,7 @@ const Button = ({
     reverse = false,
     visible = true,
     disabled,
+    children,
     loading,
     title,
     icon,
@@ -34,6 +35,7 @@ const Button = ({
                 >
                     {icon}
                     {title && <span>{title}</span>}
+                    {children}
                 </button>
             </div>
         )

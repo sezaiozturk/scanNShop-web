@@ -24,9 +24,34 @@ const useStyle = createUseStyles(
         },
         filterContainer: {
             backgroundColor: ({ colors }) => colors.secondary,
+            flexDirection: "column",
             borderRadius: 10,
+            display: "flex",
             height: "70%",
-            width: "90%",
+            padding: 10,
+            gap: 20,
+        },
+        sectionContainer: {
+            flexDirection: "column",
+            display: "flex",
+            gap: 10,
+        },
+        sectionContentContainer: {
+            display: "flex",
+            gap: 10,
+        },
+        title: {
+            fontFamily: "Alegreya-Medium",
+            fontSize: "1.6rem",
+        },
+        price: {
+            border: "1.5px solid green",
+            MozAppearance: "textfield",
+            WebkitAppearance: "none",
+            fontSize: "1.2rem",
+            borderRadius: 5,
+            padding: 5,
+            width: 52,
         },
         logo: {
             height: 75,
