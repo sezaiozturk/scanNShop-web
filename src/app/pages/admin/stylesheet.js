@@ -9,13 +9,13 @@ const useStyle = createUseStyles(
         },
         leftContainer: {
             backgroundColor: ({ colors }) => colors.primary,
-            justifyContent: "space-around",
+            justifyContent: "space-between",
             flexDirection: "column",
-            padding: "2rem 1rem",
+            padding: "2rem 1.5rem",
             alignItems: "center",
             display: "flex",
             height: "100%",
-            width: 300,
+            gap: 20,
         },
         companyName: {
             color: ({ colors }) => colors.secondary,
@@ -25,11 +25,22 @@ const useStyle = createUseStyles(
         filterContainer: {
             backgroundColor: ({ colors }) => colors.secondary,
             flexDirection: "column",
-            borderRadius: 10,
+            overflowY: "scroll",
+            borderRadius: "10px 0 0 10px",
             display: "flex",
-            height: "70%",
+            height: "100%",
             padding: 10,
             gap: 20,
+            "&::-webkit-scrollbar": {
+                width: "3px",
+            },
+            "&::-webkit-scrollbar-thumb": {
+                backgroundColor: "orange",
+                borderRadius: "5px",
+            },
+            "&::-webkit-scrollbar-track": {
+                backgroundColor: "#f0f0f0",
+            },
         },
         sectionContainer: {
             flexDirection: "column",

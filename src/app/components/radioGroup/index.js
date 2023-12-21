@@ -3,7 +3,7 @@ import { useColors } from "../../utils/setting";
 import { useState } from "react";
 
 const RadioGroup = ({ options, onChange }) => {
-    const [selectedValue, setSelectedValue] = useState("");
+    const [selectedValue, setSelectedValue] = useState(-1);
     const colors = useColors();
     const classes = useStyle({ colors });
 

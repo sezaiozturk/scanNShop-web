@@ -12,29 +12,44 @@ const ProductModal = ({ data, close }) => {
     const {
         productList,
         setProductList,
+        radioOptions,
+        setRadioOptions,
         setSelectedProduct,
         companyId,
         page,
         product,
     } = data;
 
-    const [barkod, setBarkod] = useState();
-    const [name, setName] = useState();
-    const [price, setPrice] = useState();
-    const [image, setImage] = useState(null);
-    const [category, setCategory] = useState();
-
     useEffect(() => {
         if (page === "update") {
-            const { category, image, barkod, name, price } = product;
-
-            setCategory(category);
-            setImage(image);
-            setBarkod(barkod);
-            setName(name);
-            setPrice(price);
+            setImage(product.image);
         }
     }, []);
+
+    const initialValues =
+        product === undefined
+            ? { barkod: "", category: "", name: "", price: "" }
+            : {
+                  barkod: product.barkod,
+                  category: product.category,
+                  name: product.name,
+                  price: product.price,
+              };
+
+    const [image, setImage] = useState(null);
+
+    const categoryControl = (category) => {
+        const list = radioOptions.filter((option) =>
+            option.value === category ? true : false
+        );
+
+        if (list.length === 0) {
+            setRadioOptions([
+                ...radioOptions,
+                { key: radioOptions.length, value: category },
+            ]);
+        }
+    };
 
     const handleFileInputChange = (e) => {
         const file = e.target.files[0];
@@ -62,6 +77,7 @@ const ProductModal = ({ data, close }) => {
                 })
                 .then((res) => {
                     setProductList([...productList, res.data]);
+                    categoryControl(res.data.category);
                     close();
                 })
                 .catch((err) => {
@@ -98,15 +114,7 @@ const ProductModal = ({ data, close }) => {
 
     return (
         <div className={classes.container}>
-            <Formik
-                initialValues={{
-                    barkod: "",
-                    category: "",
-                    name: "",
-                    price: "",
-                }}
-                onSubmit={handleSubmit}
-            >
+            <Formik initialValues={initialValues} onSubmit={handleSubmit}>
                 {() => (
                     <Form className={classes.form}>
                         <div className={classes.imageContainer}>
@@ -169,7 +177,10 @@ const ProductModal = ({ data, close }) => {
                             <Button
                                 title={"İptal"}
                                 variant="outlined"
-                                onClick={close}
+                                onClick={() => {
+                                    setSelectedProduct(null);
+                                    close();
+                                }}
                             />
                             <Button
                                 title={page === "add" ? "Kaydet" : "Güncelle"}

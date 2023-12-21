@@ -13,6 +13,7 @@ const Dropdown = ({ options, onSelect }) => {
     const handleOptionSelect = (option) => {
         setSelectedOption(option);
         onSelect(option);
+        setToggle(false);
     };
 
     return (

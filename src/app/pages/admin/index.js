@@ -1,8 +1,8 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import useStyle from "./stylesheet";
-import { Button, Dropdown, RadioGroup, TextInput } from "../../components";
+import { Button, Dropdown, RadioGroup } from "../../components";
 import Card from "./components/card";
 import { createModal, useModals } from "../../utils/modal";
 import Modal from "../../modals";
@@ -24,50 +24,38 @@ const Admin = () => {
     const [selectedProduct, setSelectedProduct] = useState(null);
     const modals = useModals();
     const [searchKey, setSearchKey] = useState("");
-    //---------------------------------------------------------
-    const [selectedOption, setSelectedOption] = useState("");
+    const [categories, setCategories] = useState([]);
     const [min, setMin] = useState("");
     const [max, setMax] = useState("");
-    const [control, setControl] = useState(false);
-    const [categories, setCategories] = useState([]);
     const [radioOptions, setRadioOptions] = useState([]);
+    const [selectedOption, setSelectedOption] = useState("");
 
-    const [selectedCombo, setSelectedCombo] = useState("");
-    const [items, setItems] = useState([
-        { value: "priceAsc", label: "Fiyata Göre Artan" },
-        { value: "priceDesc", label: "Fiyata Göre Azalan" },
-        { value: "dateAsc", label: "Tarihe Göre Artan" },
-        { value: "dateDesc", label: "Tarihe Göre Azalan" },
-    ]);
+    const sortOptions = [
+        { key: "priceAsc", value: "Fiyata Göre Artan" },
+        { key: "priceDesc", value: "Fiyata Göre Azalan" },
+        { key: "dateAsc", value: "Tarihe Göre (Yeni)" },
+        { key: "dateDesc", value: "Tarihe Göre (Eski)" },
+    ];
 
-    const handleComboChange = (e) => {
-        setSelectedCombo(e.target.value);
-        console.log(productList);
-        if (selectedCombo === "priceAsc") {
-            const temp = productList;
-            const sortedByPriceDescending = temp
-                .slice()
-                .sort((a, b) => b.price - a.price);
-            setProductList(sortedByPriceDescending);
-        } else if (selectedCombo === "priceDesc") {
-            const temp = productList;
-            const sortedByPriceAscending = temp
-                .slice()
-                .sort((a, b) => a.price - b.price);
-            setProductList(sortedByPriceAscending);
-        } else if (selectedCombo === "dateAsc") {
-            const temp = productList;
-            const sortedByDateDescending = temp
-                .slice()
-                .sort((a, b) => new Date(b.date) - new Date(a.date));
-            setProductList(sortedByDateDescending);
-        } else {
-            const temp = productList;
-            const sortedByDateAscending = temp
-                .slice()
-                .sort((a, b) => new Date(a.date) - new Date(b.date));
-            setProductList(sortedByDateAscending);
+    const handleDropdown = (e) => {
+        const temp = productList;
+        let islem;
+        switch (e.key) {
+            case "priceAsc":
+                islem = (a, b) => a.price - b.price;
+                break;
+            case "priceDesc":
+                islem = (a, b) => b.price - a.price;
+                break;
+            case "dateAsc":
+                islem = (a, b) => new Date(b.date) - new Date(a.date);
+                break;
+            case "dateDesc":
+                islem = (a, b) => new Date(a.date) - new Date(b.date);
+                break;
         }
+        const sortedProducts = temp.slice().sort(islem);
+        setTempList(sortedProducts);
     };
 
     useEffect(() => {
@@ -86,34 +74,33 @@ const Admin = () => {
     }, [searchKey]);
 
     useEffect(() => {
-        const temp = productList;
-        if (selectedOption == "0") {
-            const filteredProducts = temp.filter((product) => {
-                return product.category == "meyve";
+        if (selectedOption != -1) {
+            const temp = productList;
+            let selectedValue = "";
+            radioOptions.map((option) => {
+                if (option.key == selectedOption) {
+                    selectedValue = option.value;
+                }
             });
-            setTempList(filteredProducts);
-        } else if (selectedOption == "1") {
-            const filteredProducts = temp.filter((product) => {
-                return product.category == "sebze";
+            const categorizedProduct = temp.filter((product) => {
+                return product.category == selectedValue;
             });
-            setTempList(filteredProducts);
+            setTempList(categorizedProduct);
         } else {
-            const filteredProducts = temp.filter((product) => {
-                return product.category == "egzantrik";
-            });
-            setTempList(filteredProducts);
+            setTempList(productList);
         }
     }, [selectedOption]);
+
     useEffect(() => {
         const options = categories.map((category, index) => ({
             key: index,
             value: category,
         }));
+        options.push({ key: -1, value: "tümü" });
         setRadioOptions(options);
     }, [categories]);
 
     const priceFilter = () => {
-        setControl(true);
         const temp = productList;
         const filteredProducts = temp.filter((product) => {
             return product.price >= min && product.price <= max;
@@ -237,23 +224,10 @@ const Admin = () => {
                         </div>
                         <div className={classes.sectionContainer}>
                             <Dropdown
-                                options={radioOptions}
-                                onSelect={(e) => console.log(e)}
+                                options={sortOptions}
+                                onSelect={handleDropdown}
                             />
                         </div>
-                    </div>
-                    <div
-                        style={{
-                            padding: 15,
-                            backgroundColor: "white",
-                            borderRadius: 10,
-                        }}
-                    >
-                        <img
-                            src="/assets/images/logo.png"
-                            alt="logo"
-                            className={classes.logo}
-                        />
                     </div>
                 </div>
                 <div className={classes.rightContainer}>
@@ -287,6 +261,8 @@ const Admin = () => {
                                     createModal("product", {
                                         productList,
                                         setProductList,
+                                        radioOptions,
+                                        setRadioOptions,
                                         companyId,
                                         page: "add",
                                     })
@@ -330,11 +306,9 @@ const Admin = () => {
                             />
                         </div>
                         <div className={classes.cardContainer}>
-                            {searchKey.length === 0 &&
-                            selectedOption === "" &&
-                            !control
-                                ? renderProductCards(productList)
-                                : renderProductCards(tempList)}
+                            {tempList.length > 0
+                                ? renderProductCards(tempList)
+                                : renderProductCards(productList)}
                         </div>
                     </div>
                 </div>
