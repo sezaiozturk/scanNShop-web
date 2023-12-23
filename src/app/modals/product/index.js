@@ -177,10 +177,7 @@ const ProductModal = ({ data, close }) => {
                             <Button
                                 title={"İptal"}
                                 variant="outlined"
-                                onClick={() => {
-                                    setSelectedProduct(null);
-                                    close();
-                                }}
+                                onClick={close}
                             />
                             <Button
                                 title={page === "add" ? "Kaydet" : "Güncelle"}

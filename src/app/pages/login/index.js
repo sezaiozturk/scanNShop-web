@@ -8,6 +8,7 @@ import { Form, Formik } from "formik";
 import { loginSchema } from "../../schemas/loginSchema";
 import useStyle from "./stylesheet";
 import { useColors } from "../../utils/setting";
+import Cookies from "js-cookie";
 
 const Login = () => {
     const nav = useNavigate();
@@ -24,9 +25,19 @@ const Login = () => {
             })
             .then((res) => {
                 const company = res.data[0];
-                console.log(company);
+                const { companyName, name, surName } = company;
+                const currentCompany = {
+                    companyName,
+                    name,
+                    surName,
+                    isLoggedIn: true,
+                };
+                Cookies.set("companyData", JSON.stringify(currentCompany), {
+                    expires: 7,
+                    path: "/",
+                });
                 nav(`/admin/${company._id}`);
-                dispatch(setCompany(company));
+                //dispatch(setCompany(company));
             })
             .catch((err) => {
                 console.log(err);

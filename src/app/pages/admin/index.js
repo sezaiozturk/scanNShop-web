@@ -10,6 +10,7 @@ import { useColors, useLanguage } from "../../utils/setting";
 import { useSelector } from "react-redux";
 import { FaCaretDown, FaSearch } from "react-icons/fa";
 import { IoIosClose } from "react-icons/io";
+import Cookies from "js-cookie";
 
 const Admin = () => {
     const { companyId } = useParams();
@@ -17,9 +18,9 @@ const Admin = () => {
     const [tempList, setTempList] = useState([]);
     const colors = useColors();
     const language = useLanguage();
-    const currentCompany = useSelector(
+    /*const currentCompany = useSelector(
         ({ authentication }) => authentication.company
-    );
+    );*/
     const classes = useStyle({ colors });
     const [selectedProduct, setSelectedProduct] = useState(null);
     const modals = useModals();
@@ -29,6 +30,7 @@ const Admin = () => {
     const [max, setMax] = useState("");
     const [radioOptions, setRadioOptions] = useState([]);
     const [selectedOption, setSelectedOption] = useState("");
+    const companyData = JSON.parse(Cookies.get("companyData"));
 
     const sortOptions = [
         { key: "priceAsc", value: "Fiyata Göre Artan" },
@@ -63,6 +65,9 @@ const Admin = () => {
     }, []);
 
     useEffect(() => {
+        searchFilter();
+    }, [searchKey]);
+    const searchFilter = () => {
         const temp = productList;
         const filteredProducts = temp.filter((product) => {
             return (
@@ -71,9 +76,26 @@ const Admin = () => {
             );
         });
         setTempList(filteredProducts);
-    }, [searchKey]);
+    };
 
     useEffect(() => {
+        categoryFilter();
+    }, [selectedOption]);
+
+    useEffect(() => {
+        createCategory();
+    }, [categories]);
+
+    const createCategory = () => {
+        const options = categories.map((category, index) => ({
+            key: index,
+            value: category,
+        }));
+        options.push({ key: -1, value: "tümü" });
+        setRadioOptions(options);
+    };
+
+    const categoryFilter = () => {
         if (selectedOption != -1) {
             const temp = productList;
             let selectedValue = "";
@@ -89,17 +111,7 @@ const Admin = () => {
         } else {
             setTempList(productList);
         }
-    }, [selectedOption]);
-
-    useEffect(() => {
-        const options = categories.map((category, index) => ({
-            key: index,
-            value: category,
-        }));
-        options.push({ key: -1, value: "tümü" });
-        setRadioOptions(options);
-    }, [categories]);
-
+    };
     const priceFilter = () => {
         const temp = productList;
         const filteredProducts = temp.filter((product) => {
@@ -184,7 +196,9 @@ const Admin = () => {
         <div>
             <div className={classes.container}>
                 <div className={classes.leftContainer}>
-                    <span className={classes.companyName}>Çamlık Manav</span>
+                    <span className={classes.companyName}>
+                        {companyData.companyName}
+                    </span>
                     <div className={classes.filterContainer}>
                         <div className={classes.sectionContainer}>
                             <span className={classes.title}>Kategori</span>
@@ -232,7 +246,7 @@ const Admin = () => {
                 </div>
                 <div className={classes.rightContainer}>
                     <div className={classes.topContainer}>
-                        <span>Merhaba Sezai,</span>
+                        <span>Merhaba {companyData.name},</span>
                         <input
                             type="text"
                             value={searchKey}
@@ -242,7 +256,7 @@ const Admin = () => {
                         />
 
                         <Button
-                            title={"Sezai Öztürk"}
+                            title={`${companyData.name} ${companyData.surName}`}
                             variant="ghost"
                             icon={
                                 <FaCaretDown
@@ -306,7 +320,7 @@ const Admin = () => {
                             />
                         </div>
                         <div className={classes.cardContainer}>
-                            {tempList.length > 0
+                            {tempList.length > 0 || searchKey != ""
                                 ? renderProductCards(tempList)
                                 : renderProductCards(productList)}
                         </div>
