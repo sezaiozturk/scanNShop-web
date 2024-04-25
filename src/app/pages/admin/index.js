@@ -129,7 +129,7 @@ const Admin = () => {
 
     const getProduct = () => {
         axios
-            .post("http://localhost:3001/admin/find", {
+            .post("http://localhost:3000/admin/find", {
                 companyId,
             })
             .then((res) => {
@@ -143,7 +143,7 @@ const Admin = () => {
 
     const deleteProduct = () => {
         axios
-            .post("http://localhost:3001/admin/delete", {
+            .post("http://localhost:3000/admin/delete", {
                 _id: selectedProduct._id,
             })
             .then((res) => {
@@ -199,6 +199,16 @@ const Admin = () => {
                     <span className={classes.companyName}>
                         {companyData.companyName}
                     </span>
+                    <button onClick={() => {
+                        axios
+                            .post("http://localhost:3000/admin/run")
+                            .then((res) => {
+
+                            })
+                            .catch((err) => {
+                                console.log(err);
+                            });
+                    }}>run</button>
                     <div className={classes.filterContainer}>
                         <div className={classes.sectionContainer}>
                             <span className={classes.title}>Kategori</span>
@@ -255,17 +265,25 @@ const Admin = () => {
                             className={classes.search}
                         />
 
-                        <Button
-                            title={`${companyData.name} ${companyData.surName}`}
-                            variant="ghost"
-                            icon={
-                                <FaCaretDown
-                                    size={"1.5rem"}
-                                    color={colors.primary}
-                                />
-                            }
-                            reverse
-                        />
+                        <div
+                            style={{
+                                display: "flex",
+                                flexDirection: "column",
+                                position: "relative",
+                            }}
+                        >
+                            <Button
+                                title={`${companyData.name} ${companyData.surName}`}
+                                variant="ghost"
+                                icon={
+                                    <FaCaretDown
+                                        size={"1.5rem"}
+                                        color={colors.primary}
+                                    />
+                                }
+                                reverse
+                            />
+                        </div>
                     </div>
                     <div className={classes.contentContainer}>
                         <div className={classes.menuContainer}>

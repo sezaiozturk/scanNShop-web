@@ -19,7 +19,7 @@ const Login = () => {
     const handleSubmit = ({ email, password }, { setSubmitting }) => {
         setSubmitting(true);
         axios
-            .post("http://localhost:3001/login", {
+            .post("http://localhost:3000/admin/login", {
                 email,
                 password,
             })

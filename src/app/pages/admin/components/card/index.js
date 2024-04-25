@@ -14,6 +14,7 @@ const Card = ({
     const tagColor = tagColors[index % 4];
     const classes = useStyle({ colors, tagColor });
     const isSelected = productId === selectedProductId;
+    console.log(image);
     return (
         <div
             key={productId}
@@ -23,7 +24,10 @@ const Card = ({
             <span
                 className={isSelected ? classes.filter2 : classes.filter}
             ></span>
-            <img src={image} className={classes.photo} />
+            <img
+                src={`http://localhost:3000/${image}`}
+                className={classes.photo}
+            />
             <span className={classes.name}>{name}</span>
             <div className={classes.priceContainer}>
                 <span>{price}</span>

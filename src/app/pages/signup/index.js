@@ -29,7 +29,7 @@ const Signup = () => {
     ) => {
         setSubmitting(true);
         axios
-            .post("http://localhost:3001/signup", {
+            .post("http://localhost:3000/admin/signup", {
                 companyName,
                 companyType,
                 city,

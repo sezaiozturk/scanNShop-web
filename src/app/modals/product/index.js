@@ -9,6 +9,7 @@ const ProductModal = ({ data, close }) => {
     const colors = useColors();
     const language = useLanguage();
     const classes = useStyle({ colors });
+    const [file, setFile] = useState("");
     const {
         productList,
         setProductList,
@@ -25,16 +26,25 @@ const ProductModal = ({ data, close }) => {
             setImage(product.image);
         }
     }, []);
+    useEffect(() => {
+        if (file) {
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                setImage(reader.result);
+            };
+            reader.readAsDataURL(file);
+        }
+    }, [file]);
 
     const initialValues =
         product === undefined
             ? { barkod: "", category: "", name: "", price: "" }
             : {
-                  barkod: product.barkod,
-                  category: product.category,
-                  name: product.name,
-                  price: product.price,
-              };
+                barkod: product.barkod,
+                category: product.category,
+                name: product.name,
+                price: product.price,
+            };
 
     const [image, setImage] = useState(null);
 
@@ -51,65 +61,82 @@ const ProductModal = ({ data, close }) => {
         }
     };
 
-    const handleFileInputChange = (e) => {
-        const file = e.target.files[0];
+    /*function dataURLtoFile(data, filename) {
+        var arr = data.split(","),
+            mime = arr[0].match(/:(.*?);/)[1],
+            bstr = atob(arr[1]),
+            n = bstr.length,
+            u8arr = new Uint8Array(n);
 
-        if (file) {
-            const reader = new FileReader();
-            reader.onloadend = () => {
-                setImage(reader.result);
-            };
-            reader.readAsDataURL(file);
+        while (n--) {
+            u8arr[n] = bstr.charCodeAt(n);
         }
+        return new File([u8arr], filename, { type: mime });
+    }*/
+
+    const handleFileInputChange = (e) => {
+        setFile(e.target.files[0]);
     };
 
     const handleSubmit = ({ barkod, category, name, price }, actions) => {
-        if (page === "add") {
-            axios
-                .post("http://localhost:3001/admin/add", {
-                    companyId,
-                    category,
-                    image,
-                    barkod,
-                    name,
-                    price,
-                    date: new Date(),
-                })
-                .then((res) => {
-                    setProductList([...productList, res.data]);
-                    categoryControl(res.data.category);
-                    close();
-                })
-                .catch((err) => {
-                    console.log(err);
-                });
-        } else {
-            axios
-                .post("http://localhost:3001/admin/update", {
-                    _id: product._id,
-                    companyId,
-                    category,
-                    image,
-                    barkod,
-                    name,
-                    price,
-                })
-                .then((res) => {
-                    const updatedProduct = res.data;
-                    let updatedList = productList.map((product) => {
-                        if (product._id === updatedProduct._id) {
-                            return { ...updatedProduct };
-                        }
-                        return product;
-                    });
-                    setProductList(updatedList);
-                    setSelectedProduct(null);
-                    close();
-                })
-                .catch((err) => {
-                    console.log(err);
-                });
-        }
+        const formData = new FormData();
+        formData.append("file", file);
+
+        axios
+            .post("http://localhost:3000/admin/upload", formData, {
+                headers: {
+                    "Content-Type": "multipart/form-data",
+                },
+            })
+            .then((res) => {
+                const filePath = res.data.filePath;
+                if (page === "add") {
+                    axios
+                        .post("http://localhost:3000/admin/add", {
+                            companyId,
+                            category,
+                            image: filePath,
+                            barkod,
+                            name,
+                            price,
+                            date: new Date(),
+                        })
+                        .then((res) => {
+                            setProductList([...productList, res.data]);
+                            categoryControl(res.data.category);
+                            close();
+                        })
+                        .catch((err) => {
+                            console.log(err);
+                        });
+                } else {
+                    axios
+                        .post("http://localhost:3000/admin/update", {
+                            _id: product._id,
+                            companyId,
+                            category,
+                            image: filePath,
+                            barkod,
+                            name,
+                            price,
+                        })
+                        .then((res) => {
+                            const updatedProduct = res.data;
+                            let updatedList = productList.map((product) => {
+                                if (product._id === updatedProduct._id) {
+                                    return { ...updatedProduct };
+                                }
+                                return product;
+                            });
+                            setProductList(updatedList);
+                            setSelectedProduct(null);
+                            close();
+                        })
+                        .catch((err) => {
+                            console.log(err);
+                        });
+                }
+            });
     };
 
     return (
