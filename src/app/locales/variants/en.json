@@ -11,6 +11,11 @@
         "startUs": "Lets get started",
         "city": "Find us in these cities and many more!",
         "downloadApp": "Download our mobile app",
-        "appTitle": "Download now for all shopping needs!"
+        "appTitle": "Download now for all shopping needs!",
+        "hello":"Hello",
+        "add":"Add Product",
+        "delete":"Delete",
+        "update":"Update",
+        "exit":"Exit"
     }
 }

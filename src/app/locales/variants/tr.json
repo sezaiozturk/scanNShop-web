@@ -11,6 +11,11 @@
         "startUs": "Başlayalım",
         "city": "Türkiye'nin her şehrindeyiz!",
         "downloadApp": "Mobil uygulamamızı indirin",
-        "appTitle": "Alışveriş ihtiyaçlarının tamamı için hemen indir!"
+        "appTitle": "Alışveriş ihtiyaçlarının tamamı için hemen indir!",
+        "hello":"Merhaba",
+        "add":"Ürün Ekle",
+        "delete":"Sil",
+        "update":"Güncelle",
+        "exit":"Çıkış"
     }
 }

@@ -1,6 +1,6 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import useStyle from "./stylesheet";
 import { Button, Dropdown, RadioGroup } from "../../components";
 import Card from "./components/card";
@@ -8,8 +8,8 @@ import { createModal, useModals } from "../../utils/modal";
 import Modal from "../../modals";
 import { useColors, useLanguage } from "../../utils/setting";
 import { useSelector } from "react-redux";
-import { FaCaretDown, FaSearch } from "react-icons/fa";
-import { IoIosClose } from "react-icons/io";
+import { FaSearch } from "react-icons/fa";
+import { IoIosClose, IoMdExit } from "react-icons/io";
 import Cookies from "js-cookie";
 
 const Admin = () => {
@@ -199,16 +199,6 @@ const Admin = () => {
                     <span className={classes.companyName}>
                         {companyData.companyName}
                     </span>
-                    <button onClick={() => {
-                        axios
-                            .post("http://localhost:3000/admin/run")
-                            .then((res) => {
-
-                            })
-                            .catch((err) => {
-                                console.log(err);
-                            });
-                    }}>run</button>
                     <div className={classes.filterContainer}>
                         <div className={classes.sectionContainer}>
                             <span className={classes.title}>Kategori</span>
@@ -256,7 +246,7 @@ const Admin = () => {
                 </div>
                 <div className={classes.rightContainer}>
                     <div className={classes.topContainer}>
-                        <span>Merhaba {companyData.name},</span>
+                        <span>{language.hello} {companyData.name},</span>
                         <input
                             type="text"
                             value={searchKey}
@@ -264,7 +254,6 @@ const Admin = () => {
                             placeholder="Ara..."
                             className={classes.search}
                         />
-
                         <div
                             style={{
                                 display: "flex",
@@ -272,23 +261,28 @@ const Admin = () => {
                                 position: "relative",
                             }}
                         >
-                            <Button
-                                title={`${companyData.name} ${companyData.surName}`}
-                                variant="ghost"
-                                icon={
-                                    <FaCaretDown
-                                        size={"1.5rem"}
-                                        color={colors.primary}
-                                    />
-                                }
-                                reverse
-                            />
+                            <Link to={"/"}>
+                                <Button
+                                    title={language.exit}
+                                    variant="ghost"
+                                    icon={
+                                        <IoMdExit
+                                            size={"2.5rem"}
+                                            color={colors.primary}
+                                        />
+                                    }
+                                    reverse
+                                    onClick={() => {
+
+                                    }}
+                                />
+                            </Link>
                         </div>
                     </div>
                     <div className={classes.contentContainer}>
                         <div className={classes.menuContainer}>
                             <Button
-                                title="Ürün Ekle"
+                                title={language.add}
                                 onClick={() =>
                                     createModal("product", {
                                         productList,
@@ -302,13 +296,13 @@ const Admin = () => {
                             />
                             {modals.length > 0 && <Modal />}
                             <Button
-                                title="Sil"
+                                title={language.delete}
                                 variant="outlined"
                                 visible={selectedProduct}
                                 onClick={deleteProduct}
                             />
                             <Button
-                                title="Güncelle"
+                                title={language.update}
                                 variant="outlined"
                                 visible={selectedProduct}
                                 onClick={() => {

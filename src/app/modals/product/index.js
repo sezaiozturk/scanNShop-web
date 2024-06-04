@@ -23,7 +23,7 @@ const ProductModal = ({ data, close }) => {
 
     useEffect(() => {
         if (page === "update") {
-            setImage(product.image);
+            setImage(`http://localhost:3000/${product.image}`);
         }
     }, []);
     useEffect(() => {
@@ -61,82 +61,81 @@ const ProductModal = ({ data, close }) => {
         }
     };
 
-    /*function dataURLtoFile(data, filename) {
-        var arr = data.split(","),
-            mime = arr[0].match(/:(.*?);/)[1],
-            bstr = atob(arr[1]),
-            n = bstr.length,
-            u8arr = new Uint8Array(n);
-
-        while (n--) {
-            u8arr[n] = bstr.charCodeAt(n);
-        }
-        return new File([u8arr], filename, { type: mime });
-    }*/
-
     const handleFileInputChange = (e) => {
+        console.log(e.target.files[0])
         setFile(e.target.files[0]);
     };
 
-    const handleSubmit = ({ barkod, category, name, price }, actions) => {
-        const formData = new FormData();
-        formData.append("file", file);
-
+    const updateProductDetails = ({ barkod, category, name, price }, filePath) => {
         axios
-            .post("http://localhost:3000/admin/upload", formData, {
-                headers: {
-                    "Content-Type": "multipart/form-data",
-                },
+            .post("http://localhost:3000/admin/update", {
+                _id: product._id,
+                companyId,
+                category,
+                image: filePath,
+                barkod,
+                name,
+                price,
             })
             .then((res) => {
-                const filePath = res.data.filePath;
-                if (page === "add") {
-                    axios
-                        .post("http://localhost:3000/admin/add", {
-                            companyId,
-                            category,
-                            image: filePath,
-                            barkod,
-                            name,
-                            price,
-                            date: new Date(),
-                        })
-                        .then((res) => {
-                            setProductList([...productList, res.data]);
-                            categoryControl(res.data.category);
-                            close();
-                        })
-                        .catch((err) => {
-                            console.log(err);
-                        });
-                } else {
-                    axios
-                        .post("http://localhost:3000/admin/update", {
-                            _id: product._id,
-                            companyId,
-                            category,
-                            image: filePath,
-                            barkod,
-                            name,
-                            price,
-                        })
-                        .then((res) => {
-                            const updatedProduct = res.data;
-                            let updatedList = productList.map((product) => {
-                                if (product._id === updatedProduct._id) {
-                                    return { ...updatedProduct };
-                                }
-                                return product;
-                            });
-                            setProductList(updatedList);
-                            setSelectedProduct(null);
-                            close();
-                        })
-                        .catch((err) => {
-                            console.log(err);
-                        });
-                }
+                const updatedProduct = res.data;
+                let updatedList = productList.map((product) => {
+                    if (product._id === updatedProduct._id) {
+                        return { ...updatedProduct };
+                    }
+                    return product;
+                });
+                setProductList(updatedList);
+                setSelectedProduct(null);
+                close();
+            })
+            .catch((err) => {
+                console.log(err);
             });
+    }
+    const addProductDetails = ({ barkod, category, name, price }, filePath) => {
+        axios
+            .post("http://localhost:3000/admin/add", {
+                companyId,
+                category,
+                image: filePath,
+                barkod,
+                name,
+                price,
+                date: new Date(),
+            })
+            .then((res) => {
+                setProductList([...productList, res.data]);
+                categoryControl(res.data.category);
+                close();
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+    }
+
+    const handleSubmit = (data, actions) => {
+        const formData = new FormData();
+        if (image.split(":")[0] === "http") {
+            updateProductDetails(data, null);
+        }
+        else {
+            formData.append("file", file);
+            axios
+                .post("http://localhost:3000/admin/upload", formData, {
+                    headers: {
+                        "Content-Type": "multipart/form-data",
+                    },
+                })
+                .then((res) => {
+                    const filePath = res.data.filePath;
+                    if (page === "add") {
+                        addProductDetails(data, filePath);
+                    } else {
+                        updateProductDetails(data, filePath);
+                    }
+                });
+        }
     };
 
     return (

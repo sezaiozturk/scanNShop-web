@@ -14,7 +14,7 @@ const Card = ({
     const tagColor = tagColors[index % 4];
     const classes = useStyle({ colors, tagColor });
     const isSelected = productId === selectedProductId;
-    console.log(image);
+
     return (
         <div
             key={productId}
